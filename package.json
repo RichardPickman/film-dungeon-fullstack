@@ -1,0 +1,27 @@
+{
+  "name": "film-dungeon-fullstack",
+  "version": "0.0.1",
+  "description": "Film dungeon",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/richardpickman/film-dungeon-fullstack.git"
+  },
+  "keywords": [
+    "Drizzle",
+    "ORM",
+    "NextJS",
+    "13",
+    "Express",
+    "Socket.IO"
+  ],
+  "author": "richard pickman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/richardpickman/film-dungeon-fullstack/issues"
+  },
+  "homepage": "https://github.com/richardpickman/film-dungeon-fullstack#readme"
+}

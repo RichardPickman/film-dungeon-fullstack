@@ -1,0 +1,76 @@
+version: '3'
+
+services:
+    # nginx:
+    #     container_name: nginx-service
+    #     image: nginx:latest
+    #     volumes:
+    #         - ./backend:/var/www/html/
+    #         - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    #     ports:
+    #         - 5000:5000
+    #     depends_on:
+    #         - backend
+    #         - frontend
+    #     networks:
+    #         - shop
+
+    # backend:
+    #     container_name: backend-service
+    #     image: php:fpm
+    #     command: bash -c "docker-php-ext-install pdo_mysql && php-fpm"
+    #     ports:
+    #         - 9000:9000
+    #     volumes:
+    #         - ./backend:/var/www/html/
+    #     environment:
+    #         - SERVER=${SERVER}
+    #         - DATABASE=${DATABASE}
+    #         - USERNAME=root
+    #         - PASSWORD=${MYSQL_ROOT_PASSWORD}
+    #         - UI_URL=${UI_URL}
+    #     networks:
+    #         - shop
+
+    # frontend:
+    #     container_name: frontend-service
+    #     build:
+    #         context: ./frontend/
+    #         target: watcher
+    #         args:
+    #             - API_URL=${API_URL}
+    #             - CLOUDINARY_URL=${CLOUDINARY_URL}
+    #     ports:
+    #         - 3000:3000
+    #     volumes:
+    #         - ./frontend:/var/www
+    #     depends_on:
+    #         - backend
+    #         - db
+    #     networks:
+    #         - shop
+
+    db:
+        container_name: db-service
+        image: mysql
+        restart: always
+        volumes:
+            - ./database/data:/var/lib/mysql
+            - ./database/games.sql:/docker-entrypoint-initdb.d/default.sql
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        networks:
+            - shop
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8080:8080
+        networks:
+            - shop
+
+networks:
+    shop:
