@@ -1,5 +1,5 @@
 FROM node:18-alpine AS watcher
-WORKDIR /var/www
+WORKDIR /app
 
 ARG API_URL
 ENV NEXT_PUBLIC_API_URL $API_URL
@@ -11,7 +11,7 @@ EXPOSE 3000
 
 
 FROM node:18-alpine AS builder
-WORKDIR /var/www
+WORKDIR /app
 
 ARG API_URL
 ENV NEXT_PUBLIC_API_URL $API_URL
