@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/richardpickman/film-dungeon-fullstack/issues"
   },
-  "homepage": "https://github.com/richardpickman/film-dungeon-fullstack#readme"
+  "homepage": "https://github.com/richardpickman/film-dungeon-fullstack#readme",
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
 }
