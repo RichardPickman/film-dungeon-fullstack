@@ -1,11 +1,13 @@
-import { drizzle } from "drizzle-orm/planetscale-serverless";
-import { connect } from "@planetscale/database";
+import { drizzle, PostgresJsDatabase } from 'drizzle-orm/postgres-js';
+import { configs } from '../config';
+import postgres from 'postgres';
 
-// create the connection
-const connection = connect({
-    host: process.env["host"],
-    username: process.env["username"],
-    password: process.env["password"],
-});
+const { DATABASE_URL } = configs;
 
-const db = drizzle(connection);
+if (!DATABASE_URL) {
+    throw new Error('NO DATABASE URL!');
+}
+
+const client = postgres(DATABASE_URL);
+
+export const db: PostgresJsDatabase = drizzle(client);
