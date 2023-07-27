@@ -1,51 +1,31 @@
-'use client';
+"use client";
 
-import { Plus } from '@/assets/icons/plus';
-import { Card } from '@/components/Card';
-import { RootState } from '@/store';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-    addBoss,
-    addQuestion,
-    removeDungeon,
-    removeBoss,
-    removeQuestion,
-} from '@/store/reducers/creator';
-import { Dungeons } from './elements/Dungeons';
-import { Button } from '@/components/ui/button';
+import { GameCards } from "@/components/GameCard";
+import { CreateGame } from "@/components/CreateGame";
+import { useQuery } from "@tanstack/react-query";
+import { get } from "@/actions/fetch";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL as string;
+const GAMES_ADDRESS = `${process.env.NEXT_PUBLIC_API_URL}/game`;
 
 const Page = () => {
-    const { dungeons } = useSelector((state: RootState) => state.creator);
-    const dispatch = useDispatch();
-    const [id, setId] = useState(0);
-
-    const [bossIndex, setBossIndex] = useState(0);
-    const [currentBoss, setCurrentBoss] = useState();
+    const { data, isLoading, isSuccess, refetch } = useQuery({
+        queryKey: ['games'],
+        queryFn: () => get<Required<Game>[]>(GAMES_ADDRESS),
+    });
 
     return (
-        <div className="flex flex-col w-full h-full">
-            <div className="flex flex-col gap-4 max-w-5xl w-full mx-auto">
-                {/* Dungeons */}
-                <Dungeons />
-                {/* Dungeon items */}
-                <div className="flex flex-nowrap w-full h-32 gap-2 justify-center">
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                </div>
-                {/* Current dungeon question */}
-                <div className="flex flex-nowrap w-full h-32 gap-2 justify-center">
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                </div>
+        <div className="flex flex-col w-full h-full max-w-2xl mx-auto m-4 gap-4">
+            <div className="flex justify-end items-center">
+                <CreateGame />
             </div>
+            <GameCards
+                data={data}
+                onDelete={refetch}
+                isSuccess={isSuccess}
+                isLoading={isLoading}
+            />
         </div>
     );
 };
+
 export default Page;
