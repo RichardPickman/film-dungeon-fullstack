@@ -1,0 +1,24 @@
+FROM node:18-alpine AS development
+WORKDIR /app
+
+ARG SERVER_PORT
+ARG DATABASE_URL
+
+ENV SERVER_PORT $SERVER_PORT
+ENV DATABASE_URL $DATABASE_URL
+
+EXPOSE $SERVER_PORT
+
+CMD ["npm", "run", "dev"]
+
+
+
+FROM node:18-alpine AS builder
+WORKDIR /app
+
+ARG SERVER_PORT
+ENV PORT $SERVER_PORT
+
+COPY . .
+
+CMD ["npm", "run", "deploy"]
