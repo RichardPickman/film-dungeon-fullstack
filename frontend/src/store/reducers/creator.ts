@@ -5,6 +5,7 @@ const initialState: Store = {
     dungeons: [],
     dungeonIndex: 0,
     bossIndex: 0,
+    name: '',
     status: fetchStatuses.IDLE,
 };
 

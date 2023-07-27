@@ -1,5 +1,6 @@
 interface Game {
     id?: number;
+    name: string;
     dungeons: Dungeon[] | [];
 }
 
@@ -12,8 +13,8 @@ interface Store extends Game {
 interface Dungeon {
     id: number;
     image?: string;
-    monsters: Antagonist[] | [];
-    boss: Antagonist;
+    monsters: Monster[] | [];
+    boss: Monster;
 }
 
 interface Question {
@@ -31,7 +32,7 @@ interface MapperQuestion extends Question {
     numbers: string[];
 }
 
-interface Antagonist {
+interface Monster {
     id: number;
     hp: number;
     name: string;
