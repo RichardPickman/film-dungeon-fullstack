@@ -1,20 +1,43 @@
-const API_URL = process.env.API_URL;
+import axios, { AxiosError } from 'axios';
 
-type URL = string | undefined;
-type Method = string;
-type Headers = HeadersInit | undefined;
+const json = (data: unknown) => JSON.stringify(data);
 
-const fetchGame = async (method: Method, headers: Headers, body?: Store | {}, url: URL = '') =>
-    await fetch(`${API_URL}/game${url}`, {
-        method,
-        headers,
-        body: JSON.stringify(body),
-    }).then(res => res.json());
+export const create = async <T>(url: string, values: T) => {
+    try {
+        const { data } = await axios.post(url, values);
 
-export const postGame = async (data: Store) => await fetchGame('POST', {}, data);
+        return data as Game;
+    } catch (e) {
+        throw new Error('Error during creating of item');
+    }
+};
 
-export const getGame = async (id: string) => await fetchGame('GET', {}, {}, `/${id}`);
+export const get = async <T>(url: string) => {
+    try {
+        const { data } = await axios.get(url).catch(err => err.response);
 
-export const putGame = async (data: Store) => await fetchGame('PUT', {}, data);
+        return data as T;
+    } catch (e: unknown) {
+        throw new Error('Error during getting an items');
+    }
+};
 
-export const deleteGame = async (id: string) => await fetchGame('DELETE', {}, {}, `/${id}`);
+export const update = async (url: string, values: unknown) => {
+    try {
+        const { data } = await axios.put(url, values);
+
+        return data as Game;
+    } catch (e) {
+        throw new Error('Error during updating an item');
+    }
+};
+
+export const remove = async (url: string) => {
+    try {
+        const { data } = await axios.delete(url);
+
+        return data as Game;
+    } catch (e) {
+        throw new Error('Error during removing an item');
+    }
+};
