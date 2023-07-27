@@ -5,19 +5,26 @@
     "scripts": {
         "build": "npx tsc",
         "start": "node ./build/index.js",
-        "dev": "nodemon ./index.ts"
+        "dev": "nodemon ./index.ts",
+        "deploy": "npm run build && npm run start",
+        "migrate": "drizzle-kit generate:pg --schema=./db/schemas/*"
     },
     "dependencies": {
-        "@planetscale/database": "^1.8.0",
+        "@neondatabase/serverless": "^0.5.6",
+        "body-parser": "^1.20.2",
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
         "drizzle-orm": "^0.27.2",
         "express": "^4.18.2",
-        "socket.io": "^4.7.1"
+        "postgres": "^3.3.5",
+        "socket.io": "^4.7.1",
+        "zod": "^3.21.4"
     },
     "devDependencies": {
         "@types/express": "^4.17.17",
         "@types/node": "^20.4.2",
         "concurrently": "^8.2.0",
-        "drizzle-kit": "^0.19.9",
+        "drizzle-kit": "^0.19.10",
         "nodemon": "^3.0.1",
         "ts-node": "^10.9.1",
         "typescript": "^5.1.6"
