@@ -1,12 +1,15 @@
-import { insertGame, getGame, updateGame, deleteGame, getAllGames } from "../services/game";
-import { NextFunction, Request, Response } from "express";
-
+import {
+    insertGame,
+    getPopulatedGame,
+    updateGame,
+    deleteGame,
+    getAllGames,
+} from '../services/game';
+import { NextFunction, Request, Response } from 'express';
 
 export const getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await getAllGames();
-
-        console.log('get all worked')
 
         res.json(result);
     } catch (e) {
@@ -18,7 +21,7 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
     try {
         const result = await insertGame(req.body);
 
-        res.json();
+        res.json(result);
     } catch (e) {
         next();
     }
@@ -27,10 +30,12 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
 export const get = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        const result = await getGame(Number(id));
+        const result = await getPopulatedGame(Number(id));
 
         res.json(result);
     } catch (e) {
+        console.log(e);
+
         next();
     }
 };

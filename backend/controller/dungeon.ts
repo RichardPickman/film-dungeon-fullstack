@@ -1,14 +1,20 @@
-import { insertDungeon, getDungeon, updateDungeon, deleteDungeon } from "../services/dungeon";
-import { randomUUID } from "crypto";
-import { NextFunction, Request, Response } from "express";
+import {
+    insertDungeon,
+    getDungeon,
+    updateDungeon,
+    deleteDungeon,
+    getDungeons,
+} from '../services/dungeon';
+import { NextFunction, Request, Response } from 'express';
 
-const mockDungeons = [
-    { id: 1, name: "First game" },
-    { id: 2, name: "Second game" },
-];
+export const getAllDungeons = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await getDungeons(Number(req.params.id));
 
-export const getDungeons = async (req: Request, res: Response, next: NextFunction) => {
-    res.json(mockDungeons);
+        res.json(result);
+    } catch (e) {
+        next();
+    }
 };
 
 export const create = async (req: Request, res: Response, next: NextFunction) => {
