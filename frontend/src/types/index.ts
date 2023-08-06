@@ -1,3 +1,8 @@
+type ImageInfo = {
+    fileUrl: string;
+    fileKey: string;
+};
+
 interface Game {
     id?: number;
     name: string;
@@ -11,23 +16,34 @@ interface Store extends Game {
 }
 
 interface Dungeon {
+    gameId: number;
     id: number;
-    image?: string;
+    name: string;
+    image?: ImageInfo;
     monsters: Monster[] | [];
-    boss: Monster;
+    bossId: number;
 }
 
+type OneOfQuestions = MapperQuestion | SingleQuestion | MultipleQuestion;
+type QuestionType = 'single' | 'multiple' | 'mapper';
 interface Question {
-    type: 'single' | 'multiple' | 'mapper';
+    id?: number;
+    image?: ImageInfo | null;
+    monsterId: number;
     question: string;
-    image?: string;
+}
+
+interface SingleQuestion extends Question {
+    type: 'single';
 }
 
 interface MultipleQuestion extends Question {
+    type: 'multiple';
     answers: string[];
 }
 
 interface MapperQuestion extends Question {
+    type: 'mapper';
     letters: string[];
     numbers: string[];
 }
@@ -36,6 +52,8 @@ interface Monster {
     id: number;
     hp: number;
     name: string;
-    image?: string;
-    questions: (Question | MultipleQuestion | MapperQuestion)[];
+    image?: ImageInfo;
+    dungeonId: number;
+    gameId: number;
+    questions: OneOfQuestions[];
 }
