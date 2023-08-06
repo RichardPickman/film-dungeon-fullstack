@@ -1,5 +1,6 @@
-import { drizzle, PostgresJsDatabase } from 'drizzle-orm/postgres-js';
+import { drizzle } from 'drizzle-orm/postgres-js';
 import { configs } from '../config';
+import * as schema from './schemas/game';
 import postgres from 'postgres';
 
 const { DATABASE_URL } = configs;
@@ -10,4 +11,4 @@ if (!DATABASE_URL) {
 
 const client = postgres(DATABASE_URL);
 
-export const db: PostgresJsDatabase = drizzle(client);
+export const db = drizzle(client, { schema });
