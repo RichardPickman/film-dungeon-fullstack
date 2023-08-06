@@ -7,7 +7,7 @@
         "start": "node ./build/index.js",
         "dev": "nodemon ./index.ts",
         "deploy": "npm run build && npm run start",
-        "migrate": "drizzle-kit generate:pg --schema=./db/schemas/*"
+        "generate": "drizzle-kit generate:pg --schema=./db/schemas/*"
     },
     "dependencies": {
         "@neondatabase/serverless": "^0.5.6",
