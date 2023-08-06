@@ -1,48 +1,56 @@
-version: "3"
+version: '3'
 
 services:
-  backend:
-    container_name: backend
-    build:
-      context: ./backend/
-      target: development
-      args:
-        - SERVER_PORT=${SERVER_PORT}
-        - DATABASE_URL=${DATABASE_URL}
-    ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
-    volumes:
-      - ./backend:/app
-    networks:
-      - shop
+    backend:
+        container_name: backend
+        build:
+            context: ./backend/
+            target: development
+            args:
+                - SERVER_PORT=${SERVER_PORT}
+                - DATABASE_URL=${DATABASE_URL}
+        ports:
+            - ${SERVER_PORT}:${SERVER_PORT}
+        volumes:
+            - ./backend:/app
+        networks:
+            - shop
 
-  frontend:
-    container_name: frontend
-    build:
-      context: ./frontend/
-      target: watcher
-      args:
-        - API_URL=${API_URL}
-        - CLOUDINARY_URL=${CLOUDINARY_URL}
-    ports:
-      - ${FRONT_PORT}:${FRONT_PORT}
-    volumes:
-      - ./frontend:/app
-    depends_on:
-      - backend
-    networks:
-      - shop
+    frontend:
+        container_name: frontend
+        build:
+            context: ./frontend/
+            target: watcher
+            args:
+                - API_URL=${API_URL}
+                - UPLOADTHING_SECRET=${UPLOADTHING_SECRET}
+                - UPLOADTHING_APP_ID=${UPLOADTHING_APP_ID}
+        ports:
+            - ${FRONT_PORT}:${FRONT_PORT}
+        volumes:
+            - ./frontend:/app
+        depends_on:
+            - backend
+        networks:
+            - shop
 
-  db:
-    container_name: db
-    image: postgres
-    restart: always
-    ports:
-      - 5432:5432
-    environment:
-      POSTGRES_PASSWORD: example
-    networks:
-      - shop
+    db:
+        container_name: db
+        image: postgres
+        restart: always
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_PASSWORD: example
+        networks:
+            - shop
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8080:8080
+        networks:
+            - shop
 
 networks:
-  shop:
+    shop:
