@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { create } from '@/actions/fetch';
 import { useRouter } from 'next/navigation';
 import { useToast } from '../ui/use-toast';
+import { Spinner } from '../Spinner';
 
 const GAME_ADDRESS = `${process.env.NEXT_PUBLIC_API_URL}/game/new`;
 
@@ -23,8 +24,8 @@ export const CreateGame = () => {
     const { toast } = useToast();
     const router = useRouter();
 
-    const { mutate } = useMutation({
-        mutationFn: () => create(GAME_ADDRESS, { name }),
+    const { mutate, isLoading } = useMutation({
+        mutationFn: () => create<{}, Required<Game>>(GAME_ADDRESS, { name }),
         onSuccess: data => {
             router.push(`/admin/${data.id}`);
         },
@@ -68,7 +69,15 @@ export const CreateGame = () => {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button onClick={() => mutate()}>Создать</Button>
+                    <Button
+                        variant="outline"
+                        className="rounded col-span-3"
+                        disabled={isLoading}
+                        onClick={() => mutate()}
+                    >
+                        {isLoading && <Spinner />}
+                        {!isLoading && <Label>Создать</Label>}
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
