@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "face8d93-40db-4bd5-822f-5be387729719",
+  "id": "8051a57f-c7e2-4417-a770-f43eebd2e721",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "dungeon": {
@@ -16,13 +16,58 @@
         },
         "image": {
           "name": "image",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
           "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "game_id": {
+          "name": "game_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "boss_id": {
+          "name": "boss_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "dungeon_game_id_game_id_fk": {
+          "name": "dungeon_game_id_game_id_fk",
+          "tableFrom": "dungeon",
+          "tableTo": "game",
+          "columnsFrom": [
+            "game_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "dungeon_boss_id_monster_id_fk": {
+          "name": "dungeon_boss_id_monster_id_fk",
+          "tableFrom": "dungeon",
+          "tableTo": "monster",
+          "columnsFrom": [
+            "boss_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -72,7 +117,13 @@
         },
         "image": {
           "name": "image",
-          "type": "varchar(256)",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dungeon_id": {
+          "name": "dungeon_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         }
@@ -106,7 +157,7 @@
         },
         "image": {
           "name": "image",
-          "type": "varchar(256)",
+          "type": "json",
           "primaryKey": false,
           "notNull": false
         },
@@ -127,6 +178,12 @@
           "type": "json",
           "primaryKey": false,
           "notNull": false
+        },
+        "monster_id": {
+          "name": "monster_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
