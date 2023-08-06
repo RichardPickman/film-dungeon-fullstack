@@ -1,4 +1,4 @@
-import { DungeonCreate } from '@/components/GameSelectors';
+import { DungeonCreate } from '@/modules/admin/elements/ui/GameSelectors';
 import { Header } from '../Header';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/ui/button';

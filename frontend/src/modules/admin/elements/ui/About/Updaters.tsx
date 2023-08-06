@@ -7,18 +7,18 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '../ui/dialog';
+} from '@/components/ui/dialog';
 import { useMutation } from '@tanstack/react-query';
 import { updateDungeon } from '@/services/dungeon';
-import { deleteImage, getImageKey } from '@/services/image';
-import { toast } from '../ui/use-toast';
-import { Button } from '../ui/button';
+import { deleteImage } from '@/services/image';
+import { toast } from '@/components/ui/use-toast';
+import { Button } from '@/components/ui/button';
 import { ImageComponent } from '../GameSelectors';
 import { Label } from '@radix-ui/react-label';
-import { Input } from '../ui/input';
+import { Input } from '@/components/ui/input';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { updateMonster } from '@/services/monster';
-import { Checkbox } from '../ui/checkbox';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface Monster {
     previousData: {

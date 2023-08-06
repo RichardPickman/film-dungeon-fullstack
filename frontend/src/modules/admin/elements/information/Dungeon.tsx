@@ -1,4 +1,4 @@
-import { DungeonInfo, GameInfo } from '@/components/About';
+import { DungeonInfo, GameInfo } from '../ui/About';
 import { Header } from '../Header';
 
 interface Props {

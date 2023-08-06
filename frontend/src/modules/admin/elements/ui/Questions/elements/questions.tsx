@@ -1,5 +1,10 @@
 import { Skeleton } from '@/components/ui/skeleton';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../ui/accordion';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '../../../../../../components/ui/accordion';
 import Image from 'next/image';
 import {
     AlertDialog,

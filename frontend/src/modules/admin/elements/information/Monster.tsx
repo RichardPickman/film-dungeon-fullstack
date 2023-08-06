@@ -1,4 +1,4 @@
-import { MonsterInfo } from '@/components/About';
+import { MonsterInfo } from '../ui/About';
 import { Header } from '../Header';
 
 interface Props {

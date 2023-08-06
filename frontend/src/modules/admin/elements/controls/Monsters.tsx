@@ -1,4 +1,4 @@
-import { MonsterCreate } from '@/components/GameSelectors';
+import { MonsterCreate } from '@/modules/admin/elements/ui/GameSelectors';
 import { Header } from '../Header';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/ui/button';

@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 
 import { getDungeons } from '@/services/dungeon';
 import { getMonsters } from '@/services/monster';
-import { Questions } from '@/components/Questions';
+import { Questions } from '@/modules/admin/elements/ui/Questions';
 import { Dungeons } from './elements/controls/Dungeons';
 import { Monsters } from './elements/controls/Monsters';
 import { ControlsSkeleton } from './elements/controls/Skeleton';

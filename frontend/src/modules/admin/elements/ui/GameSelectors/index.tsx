@@ -7,7 +7,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '../ui/dialog';
+} from '../../../../../components/ui/dialog';
 import { Label } from '@radix-ui/react-label';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
@@ -35,8 +35,8 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from '../ui/alert-dialog';
-import { Checkbox } from '../ui/checkbox';
+} from '../../../../../components/ui/alert-dialog';
+import { Checkbox } from '../../../../../components/ui/checkbox';
 
 interface DungeonProps {
     gameId: number;

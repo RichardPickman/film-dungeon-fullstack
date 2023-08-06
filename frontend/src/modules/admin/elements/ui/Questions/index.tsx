@@ -7,13 +7,19 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue,
-} from '../ui/select';
+} from '../../../../../components/ui/select';
 import { deleteQuestion, getQuestions, saveQuestion } from '@/services/question';
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { Button } from '../ui/button';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '../../../../../components/ui/dialog';
+import { Button } from '../../../../../components/ui/button';
 import { Foundation } from './elements/foundation';
-import { toast } from '../ui/use-toast';
+import { toast } from '../../../../../components/ui/use-toast';
 import { QuestionsAccordion, QuestionsSkeleton } from './elements/questions';
 
 interface Props {
