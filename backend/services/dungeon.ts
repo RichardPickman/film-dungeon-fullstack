@@ -1,21 +1,41 @@
-import { eq } from "drizzle-orm";
-import { db } from "../db";
-import { dungeon } from "../db/schemas/game";
+import { InferModel, eq } from 'drizzle-orm';
+import { db } from '../db';
+import { dungeon } from '../db/schemas/game';
 
-export const insertDungeon = async (body: { image: string }) => {
+type Dungeon = InferModel<typeof dungeon>;
+
+export const getDungeons = async (id: number) => {
+    const dungeons = await db.query.dungeon.findMany({
+        where: eq(dungeon.gameId, id),
+        with: {
+            monsters: true,
+        },
+    });
+
+    return dungeons;
+};
+
+export const insertDungeon = async (body: Dungeon) => {
     const [createdDungeon] = await db.insert(dungeon).values(body).returning();
 
     return createdDungeon;
 };
 
 export const getDungeon = async (id: number) => {
-    const [currentDungeon] = await db.select().from(dungeon).where(eq(dungeon.id, id));
+    const currentDungeon = await db.query.dungeon.findFirst({
+        where: eq(dungeon.id, id),
+        with: {},
+    });
 
     return currentDungeon;
 };
 
-export const updateDungeon = async ({ id, ...rest }: { id: number, image: string }) => {
-    const [updatedDungeon] = await db.update(dungeon).set(rest).where(eq(dungeon.id, id)).returning();
+export const updateDungeon = async ({ id, ...rest }: { id: number } & Partial<Dungeon>) => {
+    const [updatedDungeon] = await db
+        .update(dungeon)
+        .set({ ...rest, image: rest.image || null })
+        .where(eq(dungeon.id, id))
+        .returning();
 
     return updatedDungeon;
 };
