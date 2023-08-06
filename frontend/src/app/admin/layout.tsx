@@ -1,17 +1,15 @@
-"use client";
-
-import { Toaster } from "@/components/ui/toaster";
-import { QueryProvider } from "../QueryProvider";
+import { Toaster } from '@/components/ui/toaster';
+import { QueryProvider } from '../QueryProvider';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
-            <QueryProvider>
-                <body>
+            <body suppressHydrationWarning>
+                <QueryProvider>
                     <Toaster />
                     {children}
-                </body>
-            </QueryProvider>
+                </QueryProvider>
+            </body>
         </html>
     );
 }

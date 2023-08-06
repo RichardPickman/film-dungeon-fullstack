@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { GameCards } from "@/components/GameCard";
-import { CreateGame } from "@/components/CreateGame";
-import { useQuery } from "@tanstack/react-query";
-import { get } from "@/actions/fetch";
+import { GameCards } from '@/components/GameCard';
+import { CreateGame } from '@/components/CreateGame';
+import { useQuery } from '@tanstack/react-query';
+import { get } from '@/actions/fetch';
 
 const GAMES_ADDRESS = `${process.env.NEXT_PUBLIC_API_URL}/game`;
 
 const Page = () => {
     const { data, isLoading, isSuccess, refetch } = useQuery({
         queryKey: ['games'],
-        queryFn: () => get<Required<Game>[]>(GAMES_ADDRESS),
+        queryFn: () => get<{}, Required<Game>[]>(GAMES_ADDRESS),
     });
 
     return (
