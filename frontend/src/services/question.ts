@@ -23,7 +23,7 @@ export const getQuestions = async (monsterId: number) => {
     return response;
 };
 
-export const updateQuestion = async (questionId: number, body: OneOfQuestions) => {
+export const updateQuestion = async (questionId: number, body: Partial<OneOfQuestions>) => {
     const response = await update<{}, Question>(`${QUESTION_ADDRESS}/${questionId}`, body);
 
     return response;
