@@ -1,15 +1,3 @@
-import { Toaster } from '@/components/ui/toaster';
-import { QueryProvider } from '../QueryProvider';
+import Layout from '@/modules/admin/layout';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-    return (
-        <html lang="en">
-            <body suppressHydrationWarning>
-                <QueryProvider>
-                    <Toaster />
-                    {children}
-                </QueryProvider>
-            </body>
-        </html>
-    );
-}
+export default Layout;
