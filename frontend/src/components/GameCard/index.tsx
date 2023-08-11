@@ -66,7 +66,7 @@ export const GameCards = ({ isLoading, isSuccess, data, onDelete }: Props) => {
                 {data.map(game => (
                     <div
                         key={game.id}
-                        className="flex p-4 border justify-between items-center rounded"
+                        className="flex p-4 border justify-between items-center "
                     >
                         <p>{game.name}</p>
                         <div className="flex gap-2">
@@ -92,16 +92,16 @@ export const GameCards = ({ isLoading, isSuccess, data, onDelete }: Props) => {
                             </AlertDialog>
                             <Link href={`/admin/${game.id}`}>
                                 <Button
-                                    className="rounded"
-                                    variant="outline"
+                                    className=""
+                                    variant="default"
                                 >
                                     Редактировать
                                 </Button>
                             </Link>
                             <Link href={`/host/${game.id}`}>
                                 <Button
-                                    className="rounded"
-                                    variant="outline"
+                                    className=""
+                                    variant="default"
                                 >
                                     Играть
                                 </Button>

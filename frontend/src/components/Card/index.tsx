@@ -10,7 +10,7 @@ interface Props {
 
 export const Card = ({ image, onClick }: Props) => (
     <div
-        className="relative sm:w-10/12 md:w-8/12 lg:w-6/12 aspect-square rounded overflow-hidden border"
+        className="relative sm:w-10/12 md:w-8/12 lg:w-6/12 aspect-square cursor-pointer overflow-hidden border"
         onClick={onClick}
     >
         {!image && (
@@ -32,7 +32,7 @@ export const Card = ({ image, onClick }: Props) => (
 
 export const CardSkeleton = () => {
     return (
-        <div className="relative w-6/12 aspect-square rounded">
+        <div className="relative w-6/12 aspect-square ">
             <Skeleton className="w-full h-full" />
         </div>
     );

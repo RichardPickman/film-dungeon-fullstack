@@ -78,7 +78,7 @@ export const QuestionsAccordion = ({ questions, onDelete }: Props) => {
                             {type === 'single' && (
                                 <div className="flex flex-col items-center gap-4">
                                     {question.image && (
-                                        <div className="relative w-64 h-64 rounded">
+                                        <div className="relative w-64 h-64 ">
                                             <Image
                                                 src={question.image.fileUrl}
                                                 alt="Картинка вопроса"
@@ -92,7 +92,7 @@ export const QuestionsAccordion = ({ questions, onDelete }: Props) => {
                             {type === 'multiple' && (
                                 <div className="flex flex-col items-center gap-4">
                                     {question.image && (
-                                        <div className="relative w-64 h-64 rounded">
+                                        <div className="relative w-64 h-64 ">
                                             <Image
                                                 src={question.image.fileUrl}
                                                 alt="Картинка вопроса"
@@ -110,7 +110,7 @@ export const QuestionsAccordion = ({ questions, onDelete }: Props) => {
                             {type === 'mapper' && (
                                 <div className="flex flex-col items-center gap-4">
                                     {question.image && (
-                                        <div className="relative w-64 h-64 rounded">
+                                        <div className="relative w-64 h-64 ">
                                             <Image
                                                 src={question.image.fileUrl}
                                                 alt="Картинка вопроса"
@@ -136,8 +136,8 @@ export const QuestionsAccordion = ({ questions, onDelete }: Props) => {
                                 <AlertDialog>
                                     <AlertDialogTrigger className="flex w-full justify-end">
                                         <Button
-                                            variant="outline"
-                                            className="rounded"
+                                            variant="default"
+                                            className=""
                                         >
                                             Удалить
                                         </Button>

@@ -33,7 +33,7 @@ export const SingleQuestion = ({
         <DialogFooter>
             <DialogClose>
                 <Button
-                    variant="outline"
+                    variant="default"
                     disabled={!question}
                     onClick={() => onSave()}
                 >
@@ -42,7 +42,7 @@ export const SingleQuestion = ({
             </DialogClose>
             <DialogClose>
                 <Button
-                    variant="outline"
+                    variant="default"
                     onClick={onRemove}
                 >
                     Отмена
@@ -79,13 +79,13 @@ export const MultipleQuestion = ({ onSave, onRemove }: MultipleProps) => {
                         key={item.id}
                     >
                         <Input
-                            className="col-span-4 rounded"
+                            className="col-span-4 "
                             value={item.text}
                             onChange={event => updateAnswer(item.id, event.target.value)}
                         />
                         <Button
-                            className="col-span-1 rounded"
-                            variant="outline"
+                            className="col-span-1 "
+                            variant="default"
                             onClick={() => removeAnswer(item.id)}
                         >
                             Удалить
@@ -93,7 +93,7 @@ export const MultipleQuestion = ({ onSave, onRemove }: MultipleProps) => {
                     </div>
                 ))}
                 <Button
-                    variant="outline"
+                    variant="default"
                     onClick={() => addAnswer()}
                 >
                     Добавить вариант ответа
@@ -102,7 +102,7 @@ export const MultipleQuestion = ({ onSave, onRemove }: MultipleProps) => {
             <DialogFooter>
                 <DialogClose>
                     <Button
-                        variant="outline"
+                        variant="default"
                         disabled={answers.length === 0}
                         onClick={() => _onSave()}
                     >
@@ -111,7 +111,7 @@ export const MultipleQuestion = ({ onSave, onRemove }: MultipleProps) => {
                 </DialogClose>
                 <DialogClose>
                     <Button
-                        variant="outline"
+                        variant="default"
                         onClick={onRemove}
                     >
                         Отмена
@@ -169,14 +169,14 @@ export const MapperQuestion = ({ onSave, onRemove }: MapperProps) => {
                         key={item.id + 'letter'}
                     >
                         <Input
-                            className="col-span-2 rounded"
+                            className="col-span-2 "
                             value={item.letter}
                             onChange={event =>
                                 updateMapper(item.id, event.target.value, item.number)
                             }
                         />
                         <Input
-                            className="col-span-2 rounded"
+                            className="col-span-2 "
                             value={item.number}
                             key={item.id + 'number'}
                             onChange={event =>
@@ -184,8 +184,8 @@ export const MapperQuestion = ({ onSave, onRemove }: MapperProps) => {
                             }
                         />
                         <Button
-                            className="col-span-1 rounded"
-                            variant="outline"
+                            className="col-span-1 "
+                            variant="default"
                             onClick={() => removeMapper(item.id)}
                         >
                             Удалить
@@ -193,7 +193,7 @@ export const MapperQuestion = ({ onSave, onRemove }: MapperProps) => {
                     </div>
                 ))}
                 <Button
-                    variant="outline"
+                    variant="default"
                     onClick={() => addMapper()}
                 >
                     Добавить варианты ответов
@@ -202,7 +202,7 @@ export const MapperQuestion = ({ onSave, onRemove }: MapperProps) => {
             <DialogFooter>
                 <DialogClose>
                     <Button
-                        variant="outline"
+                        variant="default"
                         disabled={mapper.length === 0}
                         onClick={() => _onSave()}
                     >
@@ -211,7 +211,7 @@ export const MapperQuestion = ({ onSave, onRemove }: MapperProps) => {
                 </DialogClose>
                 <DialogClose>
                     <Button
-                        variant="outline"
+                        variant="default"
                         onClick={onRemove}
                     >
                         Отмена

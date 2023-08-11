@@ -41,7 +41,7 @@ export const Foundation = ({ onSave, type, monsterId }: Props) => {
     return (
         <div className="flex flex-col gap-4">
             {image && (
-                <div className="relative w-64 h-64 rounded mx-auto">
+                <div className="relative w-64 h-64  mx-auto">
                     <Image
                         src={image.fileUrl}
                         alt="Картинка вопроса"

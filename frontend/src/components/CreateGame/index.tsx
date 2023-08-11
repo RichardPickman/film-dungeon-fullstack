@@ -40,14 +40,9 @@ export const CreateGame = () => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button
-                    variant="outline"
-                    className="rounded"
-                >
-                    Создать игру
-                </Button>
+                <Button variant="default">Создать игру</Button>
             </DialogTrigger>
-            <DialogContent className="rounded sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Создание игры</DialogTitle>
                     <DialogDescription>Введите название игры для продолжения</DialogDescription>
@@ -64,14 +59,14 @@ export const CreateGame = () => {
                             id="name"
                             value={name}
                             onChange={event => setName(event.target.value)}
-                            className="col-span-3 rounded"
+                            className="col-span-3"
                         />
                     </div>
                 </div>
                 <DialogFooter>
                     <Button
-                        variant="outline"
-                        className="rounded col-span-3"
+                        variant="default"
+                        className=" col-span-3"
                         disabled={isLoading}
                         onClick={() => mutate()}
                     >
