@@ -6,7 +6,23 @@ type ImageInfo = {
 interface Game {
     id?: number;
     name: string;
-    dungeons: Dungeon[] | [];
+    dungeons: Dungeon[];
+}
+
+type StrictGame = Required<Game>;
+
+interface GameState {
+    sessionId: string | '';
+    game: Game | null;
+    dungeon: Dungeon | null;
+    monster: Monster | null;
+    question: OneOfQuestions | null;
+    isDungeon: boolean;
+    isMonster: boolean;
+    isQuestion: boolean;
+    monsterHealth: number;
+    gameHealth: number;
+    isImageShowing: boolean;
 }
 
 interface Store extends Game {
@@ -22,6 +38,7 @@ interface Dungeon {
     image?: ImageInfo;
     monsters: Monster[] | [];
     bossId: number;
+    boss: Monster;
 }
 
 type OneOfQuestions = MapperQuestion | SingleQuestion | MultipleQuestion;
@@ -29,7 +46,8 @@ type QuestionType = 'single' | 'multiple' | 'mapper';
 interface Question {
     id?: number;
     image?: ImageInfo | null;
-    monsterId: number;
+    monsterId: number | null;
+    bossId: number | null;
     question: string;
 }
 
