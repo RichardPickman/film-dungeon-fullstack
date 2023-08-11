@@ -9,6 +9,11 @@ export const getDungeons = async (id: number) => {
         where: eq(dungeon.gameId, id),
         with: {
             monsters: true,
+            boss: {
+                with: {
+                    questions: true,
+                },
+            },
         },
     });
 
@@ -24,7 +29,9 @@ export const insertDungeon = async (body: Dungeon) => {
 export const getDungeon = async (id: number) => {
     const currentDungeon = await db.query.dungeon.findFirst({
         where: eq(dungeon.id, id),
-        with: {},
+        with: {
+            monsters: true,
+        },
     });
 
     return currentDungeon;

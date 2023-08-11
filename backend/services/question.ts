@@ -25,6 +25,7 @@ export const insertQuestion = async (body: Question) => {
 };
 
 export const updateQuestion = async ({ id, ...rest }: { id: number; image: string }) => {
+    console.log({ id, rest });
     const [updatedQuestion] = await db
         .update(question)
         .set(rest)

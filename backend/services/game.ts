@@ -2,6 +2,30 @@ import { eq } from 'drizzle-orm';
 import { db } from '../db';
 import { game } from '../db/schemas/game';
 
+export const getReadyGame = async (id: number) => {
+    const currentGame = await db.query.game.findFirst({
+        where: eq(game.id, id),
+        with: {
+            dungeons: {
+                with: {
+                    monsters: {
+                        with: {
+                            questions: true,
+                        },
+                    },
+                    boss: {
+                        with: {
+                            questions: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
+
+    return currentGame;
+};
+
 export const getPopulatedGame = async (id: number) => {
     const currentGame = await db.query.game.findFirst({
         where: eq(game.id, id),
