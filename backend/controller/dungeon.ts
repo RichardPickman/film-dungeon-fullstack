@@ -9,10 +9,12 @@ import { NextFunction, Request, Response } from 'express';
 
 export const getAllDungeons = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const result = await getDungeons(Number(req.params.id));
+        const { id } = req.params;
+        const result = await getDungeons(Number(id));
 
         res.json(result);
     } catch (e) {
+        console.log(e);
         next();
     }
 };

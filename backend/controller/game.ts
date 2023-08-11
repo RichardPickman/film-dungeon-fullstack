@@ -4,6 +4,7 @@ import {
     updateGame,
     deleteGame,
     getAllGames,
+    getReadyGame,
 } from '../services/game';
 import { NextFunction, Request, Response } from 'express';
 
@@ -30,7 +31,7 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
 export const get = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        const result = await getPopulatedGame(Number(id));
+        const result = await getReadyGame(Number(id));
 
         res.json(result);
     } catch (e) {

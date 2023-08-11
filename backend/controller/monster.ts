@@ -1,4 +1,4 @@
-import { updateDungeon } from '../services/dungeon';
+import { deleteBoss, getBoss, insertBoss, updateBoss } from '../services/boss';
 import {
     insertMonster,
     getMonster,
@@ -22,13 +22,19 @@ export const getAllMonsters = async (req: Request, res: Response, next: NextFunc
 export const create = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { boss, ...rest } = req.body;
-        const result = await insertMonster(rest);
 
         if (boss) {
-            await updateDungeon({ id: rest.dungeonId, bossId: result.id });
+            const result = await insertBoss(rest);
+
+            res.json(result);
+            return;
         }
 
+        const result = await insertMonster(rest);
+
         res.json(result);
+
+        return;
     } catch (e) {
         next();
     }
@@ -39,6 +45,13 @@ export const get = async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
         const result = await getMonster(Number(id));
 
+        if (!result) {
+            const boss = await getBoss(Number(id));
+
+            res.json(boss);
+            return;
+        }
+
         res.json(result);
     } catch (e) {
         next();
@@ -48,17 +61,20 @@ export const get = async (req: Request, res: Response, next: NextFunction) => {
 export const update = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { boss, ...rest } = req.body;
-        const result = await updateMonster(rest);
+        const query = req.query;
+        console.log(query);
 
         if (boss) {
-            await updateDungeon({ id: rest.dungeonId, bossId: result.id });
+            const result = await updateBoss(rest);
+
+            res.json(result);
         }
 
         if (!boss) {
-            await updateDungeon({ id: rest.dungeonId, bossId: null });
-        }
+            const result = await updateMonster(rest);
 
-        res.json(result);
+            res.json(result);
+        }
     } catch (e) {
         next();
     }
@@ -68,6 +84,16 @@ export const remove = async (req: Request, res: Response, next: NextFunction) =>
     try {
         const { id } = req.params;
         const result = await deleteMonster(Number(id));
+
+        if (!result) {
+            const query = req.query;
+
+            console.log(query);
+            const boss = await deleteBoss(Number(id));
+
+            res.json(boss);
+            return;
+        }
 
         res.json(result);
     } catch (e) {
