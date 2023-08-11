@@ -4,38 +4,40 @@ import { Card } from '@/components/Card';
 import { Button } from '@/components/ui/button';
 import { LeaveIcon } from '@/components/Icons/Leave';
 import { useRouter } from 'next/navigation';
+import { useContext } from 'react';
+import { CreatorContext } from '../../context';
 
-interface Props {
-    data?: Dungeon[];
-    onDungeonChange: (monsterId: number) => void;
-    refetch: () => void;
-    gameId: number;
-}
-
-export const Dungeons = (props: Props) => {
-    const { data, onDungeonChange, refetch, gameId } = props;
+export const Dungeons = () => {
+    const context = useContext(CreatorContext);
     const router = useRouter();
+
+    const onDungeonChange = (dungeon: Dungeon) => {
+        context?.onInstancesChange({ monster: null, dungeon });
+        context?.onBooleanChange({ isMonsters: true });
+    };
+
+    if (!context?.state.game?.dungeons) {
+        console.log('There is no game instance to proceed');
+
+        return null;
+    }
 
     return (
         <div className="flex flex-col h-full group relative items-center gap-4">
             <Header text="Подземелья" />
             <div className="w-full h-full flex flex-col items-center gap-4">
-                {data &&
-                    data.map(item => (
-                        <Card
-                            key={item.id}
-                            image={item.image}
-                            onClick={() => onDungeonChange(item.id!)}
-                        />
-                    ))}
-                <DungeonCreate
-                    gameId={gameId}
-                    onCreate={refetch}
-                />
+                {context.state.game.dungeons.map(item => (
+                    <Card
+                        key={item.id}
+                        image={item.image}
+                        onClick={() => onDungeonChange(item)}
+                    />
+                ))}
+                <DungeonCreate gameId={context?.state.game.id} />
             </div>
             <div className="flex flex-col w-full p-2">
                 <Button
-                    variant="outline"
+                    variant="default"
                     onClick={() => router.push('/admin')}
                 >
                     <LeaveIcon className="mr-2 w-4 h-4" />

@@ -3,37 +3,48 @@ import { Header } from '../Header';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/ui/button';
 import { LeaveIcon } from '@/components/Icons/Leave';
+import { CreatorContext } from '../../context';
+import { useContext } from 'react';
 
-interface Props {
-    data: Monster[];
-    onMonsterChange: (monsterId: number) => void;
-    refetch: () => void;
-    dungeonId: number;
-    onMonsterLeave: () => void;
-}
+export const Monsters = () => {
+    const context = useContext(CreatorContext);
 
-export const Monsters = (props: Props) => {
-    const { data, onMonsterChange, refetch, dungeonId, onMonsterLeave } = props;
+    const onMonsterChange = (monster: Monster) => {
+        context?.onInstancesChange({ monster });
+        context?.onBooleanChange({ isQuestions: true, isMonsters: true });
+    };
+
+    const onMonsterLeave = () => {
+        context?.onInstancesChange({ monster: null });
+        context?.onBooleanChange({ isQuestions: false, isMonsters: false, isDungeons: true });
+    };
+
+    const boss = context?.state.dungeon?.boss;
 
     return (
         <div className="flex flex-col h-full group relative items-center gap-4">
             <Header text="Монстры" />
             <div className="w-full h-full flex flex-col items-center gap-4">
-                {data.map(item => (
+                {context?.state.dungeon?.monsters?.map(item => (
                     <Card
                         key={item.id}
                         image={item.image}
-                        onClick={() => onMonsterChange(item.id!)}
+                        onClick={() => onMonsterChange(item)}
                     />
                 ))}
-                <MonsterCreate
-                    dungeonId={dungeonId}
-                    onCreate={refetch}
-                />
+                {boss && (
+                    <Card
+                        image={boss.image}
+                        onClick={() => onMonsterChange(boss)}
+                    />
+                )}
+                {context?.state.dungeon?.id && (
+                    <MonsterCreate dungeonId={context?.state.dungeon?.id} />
+                )}
             </div>
             <div className="flex flex-col w-full p-2">
                 <Button
-                    variant="outline"
+                    variant="default"
                     onClick={onMonsterLeave}
                 >
                     <LeaveIcon className="mr-2 w-4 h-4" />
