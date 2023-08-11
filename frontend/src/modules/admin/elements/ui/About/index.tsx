@@ -2,22 +2,29 @@ import { getGame } from '@/services';
 import { useQuery } from '@tanstack/react-query';
 import { DungeonUpdate, MonsterUpdate } from './Updaters';
 import Image from 'next/image';
+import { useContext } from 'react';
+import { CreatorContext } from '@/modules/admin/context';
 
-interface MonsterProps {
-    monster?: Monster;
-    refetch: () => void;
-    bossId?: number;
-}
+export const MonsterInfo = () => {
+    const context = useContext(CreatorContext);
+    const monster = context?.state.monster;
 
-export const MonsterInfo = ({ monster, bossId, refetch }: MonsterProps) => {
     if (!monster) {
+        console.log('There is no monster provided');
+
+        return null;
+    }
+
+    if (!monster.id) {
+        console.log('There is no monster id provided');
+
         return null;
     }
 
     return (
         <div className="flex flex-col gap-4 items-center">
-            {monster.image && (
-                <div className="relative w-10/12 aspect-square rounded">
+            {monster.image && monster.image.fileUrl && (
+                <div className="relative w-10/12 aspect-square ">
                     <Image
                         src={monster.image.fileUrl}
                         fill
@@ -28,23 +35,19 @@ export const MonsterInfo = ({ monster, bossId, refetch }: MonsterProps) => {
             <div className="flex flex-col">
                 <p>Текущий монстр: {monster.name}</p>
                 <p>Здоровье: {monster.hp}</p>
-                <p>Количество вопросов: {monster.questions.length}</p>
-                <p>Босс: {bossId === monster.id ? 'Да' : 'Нет'}</p>
+                <p>Количество вопросов: {monster.questions?.length}</p>
+                <p>Босс: {monster === context.state.dungeon?.boss ? 'Да' : 'Нет'}</p>
             </div>
-            <MonsterUpdate
-                previousData={{ ...monster, boss: bossId === monster.id }}
-                onUpdate={refetch}
-            />
+            <MonsterUpdate key={monster.id} />
         </div>
     );
 };
 
 interface DungeonProps {
     dungeon?: Dungeon;
-    refetch: () => void;
 }
 
-export const DungeonInfo = ({ dungeon, refetch }: DungeonProps) => {
+export const DungeonInfo = ({ dungeon }: DungeonProps) => {
     if (!dungeon) {
         return null;
     }
@@ -52,7 +55,7 @@ export const DungeonInfo = ({ dungeon, refetch }: DungeonProps) => {
     return (
         <div className="flex flex-col gap-4 items-center">
             {dungeon.image && (
-                <div className="relative w-10/12 aspect-square rounded">
+                <div className="relative w-10/12 aspect-square ">
                     <Image
                         src={dungeon.image.fileUrl}
                         fill
@@ -70,10 +73,7 @@ export const DungeonInfo = ({ dungeon, refetch }: DungeonProps) => {
                         ))}
                     </div>
                 </div>
-                <DungeonUpdate
-                    previousData={dungeon}
-                    onUpdate={refetch}
-                />
+                <DungeonUpdate previousData={dungeon} />
             </div>
         </div>
     );

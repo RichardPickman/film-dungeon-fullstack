@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
     Dialog,
     DialogContent,
@@ -17,40 +17,92 @@ import { ImageComponent } from '../GameSelectors';
 import { Label } from '@radix-ui/react-label';
 import { Input } from '@/components/ui/input';
 import { DialogClose } from '@radix-ui/react-dialog';
-import { updateMonster } from '@/services/monster';
+import {
+    createBoss,
+    createMonster,
+    deleteBoss,
+    deleteMonster,
+    updateBoss,
+    updateMonster,
+    updateQuestionRelation,
+} from '@/services/monster';
 import { Checkbox } from '@/components/ui/checkbox';
+import { CreatorContext } from '@/modules/admin/context';
 
-interface Monster {
-    previousData: {
-        image?: { fileUrl: string; fileKey: string };
-        id: number;
-        name: string;
-        hp: number;
-        boss: boolean;
-        dungeonId: number;
-    };
-    onUpdate: () => void;
-}
+export const MonsterUpdate = () => {
+    const context = useContext(CreatorContext);
+    const monster = context?.state.monster;
+    const boss = context?.state.dungeon?.boss;
+    const isBoss = boss?.id === monster?.id && boss?.name === monster?.name;
 
-export const MonsterUpdate = ({ previousData, onUpdate }: Monster) => {
     const [state, setState] = useState<{ hp: number; name: string; boss: boolean }>({
-        hp: previousData?.hp,
-        name: previousData?.name,
-        boss: previousData.boss || false,
+        hp: monster?.hp || 0,
+        name: monster?.name || '',
+        boss: isBoss || false,
     });
-    const [image, setImage] = useState<ImageInfo | null>(previousData.image || null);
+    const [image, setImage] = useState<ImageInfo | null>(monster?.image || null);
 
     const putDungeon = useMutation({
         mutationKey: ['create gungeon'],
-        mutationFn: () =>
-            updateMonster({
+        mutationFn: () => {
+            if (isBoss && state.boss) {
+                return updateBoss({ id: boss?.id!, ...state, image });
+            }
+
+            if (!isBoss && state.boss) {
+                deleteMonster({ ...(monster as Monster), image: undefined, id: monster?.id! });
+
+                return createBoss({ ...state, image, dungeonId: context?.state.dungeon?.id! });
+            }
+
+            if (isBoss && !state.boss) {
+                deleteBoss({ ...monster, image: undefined });
+
+                return createMonster({ ...state, image, dungeonId: context?.state.dungeon?.id! });
+            }
+
+            return updateMonster({
                 ...state,
-                image: image,
-                dungeonId: previousData.dungeonId,
-                id: previousData.id,
-            }),
-        onSuccess: () => {
-            onUpdate();
+                image,
+                id: monster?.id!,
+                dungeonId: context?.state.dungeon?.id!,
+            });
+        },
+        onSuccess: data => {
+            console.log('State saved: ', data);
+            const localMonster = data as Monster;
+
+            if (isBoss && !state.boss) {
+                console.log(
+                    'Invoke boss to monster mutation: ',
+                    'boss-to-monster',
+                    localMonster.id!,
+                    context?.state.monster?.questions as OneOfQuestions[] | [],
+                );
+
+                updateQuestionRelation(
+                    'boss-to-monster',
+                    localMonster.id!,
+                    context?.state.monster?.questions as OneOfQuestions[] | [],
+                );
+            }
+
+            if (!isBoss && state.boss) {
+                console.log(
+                    'Invoke monster to boss mutation: ',
+                    'monster-to-boss',
+                    localMonster.id!,
+                    context?.state.monster?.questions as OneOfQuestions[] | [],
+                );
+
+                updateQuestionRelation(
+                    'monster-to-boss',
+                    localMonster.id!,
+                    context?.state.monster?.questions as OneOfQuestions[] | [],
+                );
+            }
+
+            context?.refetchAll();
         },
     });
 
@@ -59,14 +111,23 @@ export const MonsterUpdate = ({ previousData, onUpdate }: Monster) => {
             try {
                 await deleteImage(image);
 
-                await updateMonster({
-                    id: previousData.id,
-                    image: null,
-                    dungeonId: previousData.dungeonId,
-                });
+                if (isBoss) {
+                    await updateBoss({
+                        id: monster?.id!,
+                        image: null,
+                        dungeonId: monster?.dungeonId,
+                    });
+                }
+
+                if (!isBoss) {
+                    await updateMonster({
+                        id: monster?.id!,
+                        image: null,
+                        dungeonId: monster?.dungeonId,
+                    });
+                }
 
                 setImage(null);
-                onUpdate();
             } catch (e) {
                 toast({
                     title: 'Ошибка!',
@@ -79,14 +140,17 @@ export const MonsterUpdate = ({ previousData, onUpdate }: Monster) => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">Редактировать монстра</Button>
+                <Button>Редактировать монстра</Button>
             </DialogTrigger>
-            <DialogContent className="rounded sm:max-w-[425px]">
+            <DialogContent className=" sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Редактирование монстра</DialogTitle>
                     <DialogDescription>Введите данные о монстре</DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
+                <div
+                    className="grid gap-4 py-4"
+                    key={monster?.id! + monster?.name!}
+                >
                     <ImageComponent
                         image={image}
                         onChange={setImage}
@@ -122,6 +186,7 @@ export const MonsterUpdate = ({ previousData, onUpdate }: Monster) => {
                         </Label>
                         <Checkbox
                             id="boss"
+                            disabled={!isBoss && Boolean(context?.state.dungeon?.boss)}
                             checked={state.boss}
                             onClick={() => setState({ ...state, boss: !state.boss })}
                         />
@@ -130,14 +195,14 @@ export const MonsterUpdate = ({ previousData, onUpdate }: Monster) => {
                 <DialogFooter>
                     <DialogClose>
                         <Button
-                            variant="outline"
+                            variant="default"
                             onClick={() => putDungeon.mutate()}
                         >
                             Обновить
                         </Button>
                     </DialogClose>
                     <DialogClose>
-                        <Button variant="outline">Закрыть</Button>
+                        <Button variant="default">Закрыть</Button>
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>
@@ -152,10 +217,10 @@ interface Dungeon {
         name: string;
         gameId: number;
     };
-    onUpdate: () => void;
 }
 
-export const DungeonUpdate = ({ previousData, onUpdate }: Dungeon) => {
+export const DungeonUpdate = ({ previousData }: Dungeon) => {
+    const context = useContext(CreatorContext);
     const [name, setName] = useState(previousData.name || '');
     const [image, setImage] = useState<ImageInfo | null>(previousData.image || null);
 
@@ -169,7 +234,7 @@ export const DungeonUpdate = ({ previousData, onUpdate }: Dungeon) => {
                 id: previousData.id,
             }),
         onSuccess: () => {
-            onUpdate();
+            context?.refetchAll();
         },
     });
 
@@ -185,7 +250,6 @@ export const DungeonUpdate = ({ previousData, onUpdate }: Dungeon) => {
                 });
 
                 setImage(null);
-                onUpdate();
             } catch (e) {
                 toast({
                     title: 'Ошибка!',
@@ -198,9 +262,9 @@ export const DungeonUpdate = ({ previousData, onUpdate }: Dungeon) => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">Редактировать подземелье</Button>
+                <Button>Редактировать подземелье</Button>
             </DialogTrigger>
-            <DialogContent className="rounded sm:max-w-[425px]">
+            <DialogContent className=" sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Редактирование</DialogTitle>
                     <DialogDescription>Введите данные о подземельи</DialogDescription>
@@ -223,15 +287,10 @@ export const DungeonUpdate = ({ previousData, onUpdate }: Dungeon) => {
                 </div>
                 <DialogFooter>
                     <DialogClose>
-                        <Button
-                            variant="outline"
-                            onClick={() => putDungeon.mutate()}
-                        >
-                            Обновить
-                        </Button>
+                        <Button onClick={() => putDungeon.mutate()}>Обновить</Button>
                     </DialogClose>
                     <DialogClose>
-                        <Button variant="outline">Закрыть</Button>
+                        <Button>Закрыть</Button>
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>

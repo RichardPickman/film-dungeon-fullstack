@@ -10,7 +10,7 @@ import {
 } from '../../../../../components/ui/dialog';
 import { Label } from '@radix-ui/react-label';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { createDungeon } from '@/services/dungeon';
 import {
@@ -24,7 +24,7 @@ import { toast } from '@/components/ui/use-toast';
 import { UploadButton } from '@/utils/uploadthing';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { Button } from '@/components/ui/button';
-import { createMonster } from '@/services/monster';
+import { createBoss, createMonster } from '@/services/monster';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -37,27 +37,33 @@ import {
     AlertDialogTrigger,
 } from '../../../../../components/ui/alert-dialog';
 import { Checkbox } from '../../../../../components/ui/checkbox';
+import { CreatorContext } from '@/modules/admin/context';
+import { Plus } from 'lucide-react';
 
 interface DungeonProps {
     gameId: number;
-    onCreate: () => void;
     previousData?: { image: { fileUrl: string; fileKey: string }; id: number; name: string };
 }
 
-export const DungeonCreate = ({ gameId, onCreate }: DungeonProps) => {
+export const DungeonCreate = ({ gameId }: DungeonProps) => {
+    const context = useContext(CreatorContext);
     const [name, setName] = useState('');
     const [image, setImage] = useState<ImageInfo | null>(null);
 
     const postDungeon = useMutation({
         mutationKey: ['create gungeon'],
-        mutationFn: () => createDungeon({ name, image, gameId }),
+        mutationFn: () => {
+            return createDungeon({ name, image, gameId });
+        },
         onSuccess: () => {
             setImage({ fileUrl: '', fileKey: '' });
-            onCreate();
+            context?.refetchAll();
         },
     });
 
     const removeImage = async () => {
+        setImage(null);
+
         if (image) {
             try {
                 await deleteImage(image);
@@ -75,7 +81,7 @@ export const DungeonCreate = ({ gameId, onCreate }: DungeonProps) => {
     return (
         <Dialog>
             <CreateTrigger />
-            <DialogContent className="rounded sm:max-w-[425px] bg-slate-200 dark:bg-black">
+            <DialogContent className=" sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Добавление подземелья</DialogTitle>
                     <DialogDescription>Введите данные о подземелье</DialogDescription>
@@ -104,18 +110,11 @@ export const DungeonCreate = ({ gameId, onCreate }: DungeonProps) => {
     );
 };
 
-interface MonsterProps {
-    dungeonId: number;
-    onCreate: () => void;
-    previousData?: {
-        image: { fileUrl: string; fileKey: string };
-        id: number;
-        name: string;
-        hp: number;
-    };
-}
-
-export const MonsterCreate = ({ dungeonId, onCreate }: MonsterProps) => {
+export const MonsterCreate = ({ dungeonId }: { dungeonId: number }) => {
+    const context = useContext(CreatorContext);
+    const monster = context?.state.monster;
+    const boss = context?.state.dungeon?.boss;
+    const isBoss = boss?.id === monster?.id && boss?.name === monster?.name;
     const [state, setState] = useState<{ hp: number; name: string; boss: boolean }>({
         hp: 0,
         name: '',
@@ -124,17 +123,25 @@ export const MonsterCreate = ({ dungeonId, onCreate }: MonsterProps) => {
     const [image, setImage] = useState<ImageInfo | null>(null);
 
     const postMonster = useMutation({
-        mutationKey: ['create gungeon'],
-        mutationFn: () => createMonster({ ...state, image, dungeonId }),
+        mutationKey: ['create monster'],
+        mutationFn: () => {
+            if (state.boss) {
+                return createBoss({ ...state, image, dungeonId });
+            }
+
+            return createMonster({ ...state, image, dungeonId });
+        },
         onSuccess: () => {
             setState({ hp: 0, name: '', boss: false });
             setImage(null);
 
-            onCreate();
+            context?.refetchAll();
         },
     });
 
     const removeImage = async () => {
+        setImage(null);
+
         if (image) {
             try {
                 await deleteImage(image);
@@ -152,7 +159,7 @@ export const MonsterCreate = ({ dungeonId, onCreate }: MonsterProps) => {
     return (
         <Dialog>
             <CreateTrigger />
-            <DialogContent className="rounded sm:max-w-[425px] bg-slate-200 dark:bg-black">
+            <DialogContent className=" sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Добавление монстра</DialogTitle>
                     <DialogDescription>Введите данные о монстре</DialogDescription>
@@ -191,7 +198,7 @@ export const MonsterCreate = ({ dungeonId, onCreate }: MonsterProps) => {
                         </Label>
                         <Checkbox
                             id="boss"
-                            checked={state.boss}
+                            disabled={Boolean(context?.state.dungeon?.boss)}
                             className="col-span-3"
                             onClick={() => setState({ ...state, boss: !state.boss })}
                         />
@@ -214,7 +221,7 @@ interface ImageProps {
 
 export const ImageComponent = ({ image, onChange, onRemove }: ImageProps) =>
     image ? (
-        <div className="relative w-64 h-64 rounded overflow-hidden justify-self-center">
+        <div className="relative w-64 h-64  overflow-hidden justify-self-center">
             <Image
                 src={image.fileUrl}
                 alt="Картинка"
@@ -262,15 +269,15 @@ const ItemsFooter = ({ onCreate, onCancel }: { onCreate: () => void; onCancel: (
     <DialogFooter>
         <DialogClose className="flex gap-2">
             <Button
-                className="rounded"
-                variant="outline"
+                className=""
+                variant="default"
                 onClick={onCreate}
             >
                 Сохранить
             </Button>
             <Button
-                className="rounded"
-                variant="outline"
+                className=""
+                variant="default"
                 onClick={onCancel}
             >
                 Отмена
@@ -281,9 +288,10 @@ const ItemsFooter = ({ onCreate, onCancel }: { onCreate: () => void; onCancel: (
 
 const CreateTrigger = () => (
     <DialogTrigger asChild>
-        <div className="w-6/12 relative rounded aspect-square overflow-hidden cursor-pointer border">
-            <div className="absolute w-1/3 h-1 rounded top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]  bg-slate-700"></div>
-            <div className="absolute h-1/3 w-1 rounded top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]  bg-slate-700"></div>
+        <div className="relative w-1/2 aspect-square overflow-hidden cursor-pointer border">
+            <div className="flex items-center justify-center w-full h-full">
+                <Plus />
+            </div>
         </div>
     </DialogTrigger>
 );

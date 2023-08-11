@@ -9,7 +9,7 @@ import {
     SelectValue,
 } from '../../../../../components/ui/select';
 import { deleteQuestion, getQuestions, saveQuestion } from '@/services/question';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
     Dialog,
     DialogContent,
@@ -21,24 +21,36 @@ import { Button } from '../../../../../components/ui/button';
 import { Foundation } from './elements/foundation';
 import { toast } from '../../../../../components/ui/use-toast';
 import { QuestionsAccordion, QuestionsSkeleton } from './elements/questions';
+import { CreatorContext } from '@/modules/admin/context';
 
-interface Props {
-    monsterId: number;
-}
-
-export const Questions = ({ monsterId }: Props) => {
+export const Questions = () => {
+    const context = useContext(CreatorContext);
+    const boss = context?.state.dungeon?.boss;
+    const monster = context?.state.monster;
+    const isBoss = boss?.id === monster?.id;
     const questions = useQuery({
-        queryKey: ['questions', monsterId],
-        queryFn: () => getQuestions(monsterId),
+        queryKey: ['questions'],
+        queryFn: () => {
+            if (context?.state.monster?.id) {
+                return getQuestions(context?.state.monster?.id);
+            }
+
+            return null;
+        },
     });
 
     const [type, setType] = useState<'single' | 'multiple' | 'mapper'>('single');
 
     const save = useMutation({
         mutationKey: ['save game'],
-        mutationFn: (data: OneOfQuestions) => saveQuestion(data),
+        mutationFn: (data: OneOfQuestions) =>
+            saveQuestion({
+                ...data,
+                bossId: isBoss ? monster?.id! : null,
+                monsterId: !isBoss ? monster?.id! : null,
+            }),
         onSuccess: () => {
-            questions.refetch();
+            context?.refetchAll();
 
             toast({
                 title: 'Успех!',
@@ -46,6 +58,8 @@ export const Questions = ({ monsterId }: Props) => {
             });
         },
         onError: () => {
+            context?.refetchAll();
+
             toast({
                 title: 'Ошибка!',
                 description: 'Произошла ошибка при сохранении вопроса!',
@@ -57,7 +71,7 @@ export const Questions = ({ monsterId }: Props) => {
         mutationKey: ['remove game'],
         mutationFn: (data: { id: number; image?: ImageInfo | null }) => deleteQuestion(data),
         onSuccess: () => {
-            questions.refetch();
+            context?.refetchAll();
 
             toast({
                 title: 'Успех!',
@@ -65,6 +79,7 @@ export const Questions = ({ monsterId }: Props) => {
             });
         },
         onError: () => {
+            context?.refetchAll();
             toast({
                 title: 'Ошибка!',
                 description: 'Произошла ошибка при удалении вопроса!',
@@ -72,20 +87,28 @@ export const Questions = ({ monsterId }: Props) => {
         },
     });
 
+    if (!context?.state.monster?.questions) {
+        console.log('There is no questions');
+    }
+
+    if (!context?.state.monster?.id) {
+        console.log('There is not enough information about a current monster');
+    }
+
     return (
         <div className="flex flex-col w-full items-center justify-center gap-4">
             {questions.isLoading && <QuestionsSkeleton />}
 
-            {questions.data && (
+            {context?.state.monster?.questions && (
                 <QuestionsAccordion
-                    questions={questions.data}
+                    questions={context.state.monster.questions}
                     onDelete={data => remove.mutate(data)}
                 />
             )}
 
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant="outline">Добавить вопрос</Button>
+                    <Button variant="default">Добавить вопрос</Button>
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
@@ -93,14 +116,14 @@ export const Questions = ({ monsterId }: Props) => {
                     </DialogHeader>
                     <div className="flex flex-col gap-4">
                         <Select onValueChange={(value: QuestionType) => setType(value)}>
-                            <SelectTrigger className="rounded">
+                            <SelectTrigger className="">
                                 <SelectValue
-                                    className="p-2 rounded"
+                                    className="p-2 "
                                     placeholder="Выбери тип вопроса"
                                 />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectGroup className="rounded bg-slate-200 dark:bg-black">
+                                <SelectGroup className="">
                                     <SelectLabel>Вопросы</SelectLabel>
                                     <SelectItem
                                         className="hover:cursor-pointer"
@@ -124,9 +147,9 @@ export const Questions = ({ monsterId }: Props) => {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        {type && (
+                        {context?.state.monster?.id && type && (
                             <Foundation
-                                monsterId={monsterId}
+                                monsterId={context?.state.monster?.id}
                                 type={type}
                                 onSave={data => save.mutate(data)}
                             />
