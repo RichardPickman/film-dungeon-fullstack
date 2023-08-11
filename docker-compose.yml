@@ -11,6 +11,7 @@ services:
                 - DATABASE_URL=${DATABASE_URL}
         ports:
             - ${SERVER_PORT}:${SERVER_PORT}
+            - 5005:5005
         volumes:
             - ./backend:/app
         networks:
