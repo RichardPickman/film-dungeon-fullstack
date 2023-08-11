@@ -1,56 +1,100 @@
-import { fetchStatuses } from '@/helpers';
-import { createAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-const initialState: Store = {
-    dungeons: [],
-    dungeonIndex: 0,
-    bossIndex: 0,
-    name: '',
-    status: fetchStatuses.IDLE,
+interface NumberedStateMap {
+    key:
+        | 'currentDungeonId'
+        | 'currentMonsterId'
+        | 'currentQuestionId'
+        | 'monsterHealth'
+        | 'gameHealth';
+    value: number | null;
+}
+
+interface BooleanStateMap {
+    key: 'isDungeon' | 'isMonster' | 'isQuestion';
+    value: boolean | null;
+}
+
+interface ActionNumbered {
+    type: string;
+    payload: NumberedStateMap;
+}
+
+interface ActionStates {
+    type: string;
+    payload: {
+        key: 'dungeon' | 'monster' | 'question';
+        value: Dungeon | Monster | Question | null;
+    };
+}
+
+interface SetGameType {
+    type: string;
+    payload: GameState;
+}
+
+const initialState: GameState = {
+    sessionId: '',
+    game: null,
+    dungeon: null,
+    monster: null,
+    question: null,
+    isDungeon: false,
+    isMonster: false,
+    isQuestion: false,
+    monsterHealth: 0,
+    gameHealth: 0,
+    isImageShowing: true,
 };
-
-const postGame = createAction<Store>('postGame');
-const putGame = createAction<Store>('putGame');
-const deleteGame = createAction<Store>('deleteGame');
 
 const creatorSlice = createSlice({
     name: 'creator',
     initialState: initialState,
     reducers: {
-        addDungeon: (state, action) => {
-            state.dungeons = [...state.dungeons, action.payload];
-            console.log(state);
+        setNumber: (state, action: ActionNumbered) => {
+            const key = action.payload.key;
+            const value = action.payload.value || 0;
+
+            return {
+                ...state,
+                [key]: value,
+            };
         },
-        addBoss: state => {
-            console.log('boss');
+        setBoolean: (state, action: { type: string; payload: BooleanStateMap }) => {
+            const key = action.payload.key;
+            const value = action.payload.value || false;
+
+            return {
+                ...state,
+                isDungeon: false,
+                isMonster: false,
+                isQuestion: false,
+                [key]: value,
+            };
         },
-        addQuestion: (state, action) => {
-            console.log('question');
+        setGame: (state, action: SetGameType) => {
+            return {
+                ...state,
+                ...action.payload,
+            };
         },
-        removeDungeon: (state, action) => {
-            console.log('remove dungeon');
+        setState: (state, action: ActionStates) => {
+            const { key, value } = action.payload;
+
+            return {
+                ...state,
+                [key]: value,
+            };
         },
-        removeBoss: (state, action) => {
-            console.log('remove boss');
+        toggleImage: state => {
+            return {
+                ...state,
+                isImageShowing: !state.isImageShowing,
+            };
         },
-        removeQuestion: (state, action) => {
-            console.log('remove question');
-        },
-    },
-    extraReducers: builder => {
-        builder.addCase(postGame, (state, action) => {
-            console.log('post game');
-        });
-        builder.addCase(putGame, (state, action) => {
-            console.log('put game');
-        });
-        builder.addCase(deleteGame, (state, action) => {
-            console.log('remove game');
-        });
     },
 });
 
-export const { addDungeon, addBoss, addQuestion, removeDungeon, removeBoss, removeQuestion } =
-    creatorSlice.actions;
+export const { setNumber, setGame, setState, setBoolean, toggleImage } = creatorSlice.actions;
 
 export default creatorSlice.reducer;
