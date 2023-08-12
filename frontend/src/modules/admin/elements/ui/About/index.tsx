@@ -48,6 +48,7 @@ interface DungeonProps {
 }
 
 export const DungeonInfo = ({ dungeon }: DungeonProps) => {
+    const context = useContext(CreatorContext);
     if (!dungeon) {
         return null;
     }
@@ -73,6 +74,16 @@ export const DungeonInfo = ({ dungeon }: DungeonProps) => {
                         ))}
                     </div>
                 </div>
+                {context?.state.dungeon?.boss && (
+                    <div className="flex flex-col gap-2">
+                        <p>Босс:</p>
+                        <div className="flex flex-col gap-1 ml-2">
+                            <p key={context?.state.dungeon?.boss.id}>
+                                {context?.state.dungeon?.boss.name}
+                            </p>
+                        </div>
+                    </div>
+                )}
                 <DungeonUpdate previousData={dungeon} />
             </div>
         </div>
