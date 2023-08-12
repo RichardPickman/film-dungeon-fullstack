@@ -82,19 +82,45 @@ export const Foundation = ({ onSave, type, monsterId }: Props) => {
             {type === 'single' && (
                 <SingleQuestion
                     question={question}
-                    onSave={() => onSave({ type, question, monsterId, image })}
+                    onSave={() =>
+                        onSave({
+                            type,
+                            question,
+                            bossId: monsterId || null,
+                            monsterId: monsterId || null,
+                            image,
+                        })
+                    }
                     onRemove={() => removeImage()}
                 />
             )}
             {type === 'multiple' && (
                 <MultipleQuestion
-                    onSave={data => onSave({ ...data, type, question, monsterId, image })}
+                    onSave={data =>
+                        onSave({
+                            ...data,
+                            type,
+                            question,
+                            bossId: monsterId || null,
+                            monsterId: monsterId || null,
+                            image,
+                        })
+                    }
                     onRemove={() => removeImage()}
                 />
             )}
             {type === 'mapper' && (
                 <MapperQuestion
-                    onSave={data => onSave({ ...data, type, question, monsterId, image })}
+                    onSave={data =>
+                        onSave({
+                            ...data,
+                            type,
+                            question,
+                            bossId: monsterId || null,
+                            monsterId: monsterId || null,
+                            image,
+                        })
+                    }
                     onRemove={() => removeImage()}
                 />
             )}
