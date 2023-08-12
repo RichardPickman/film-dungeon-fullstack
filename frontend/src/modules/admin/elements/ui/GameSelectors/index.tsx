@@ -112,9 +112,6 @@ export const DungeonCreate = ({ gameId }: DungeonProps) => {
 
 export const MonsterCreate = ({ dungeonId }: { dungeonId: number }) => {
     const context = useContext(CreatorContext);
-    const monster = context?.state.monster;
-    const boss = context?.state.dungeon?.boss;
-    const isBoss = boss?.id === monster?.id && boss?.name === monster?.name;
     const [state, setState] = useState<{ hp: number; name: string; boss: boolean }>({
         hp: 0,
         name: '',
@@ -220,7 +217,7 @@ interface ImageProps {
 }
 
 export const ImageComponent = ({ image, onChange, onRemove }: ImageProps) =>
-    image ? (
+    image?.fileUrl ? (
         <div className="relative w-64 h-64  overflow-hidden justify-self-center">
             <Image
                 src={image.fileUrl}
