@@ -27,69 +27,74 @@ const Page = () => {
 
     return (
         <div className="flex w-screen h-screen bg-green-700">
-            <div className="flex w-full mx-6 my-12 gap-6">
+            <div className="flex w-3/12 mx-3 my-6 gap-6">
                 {/* HP Bar, Current BOSS */}
-                <div className="flex flex-col justify-between w-3/12 bg-gray-500">
-                    <div className="flex items-center justify-start p-2">
+                <div className="flex flex-col w-full justify-between">
+                    <div className="flex items-center justify-start">
                         <HealthBar>{state.gameHealth}</HealthBar>
                     </div>
-                    <div className="relative h-1/2 w-full p-4 -lg overflow-hidden">
-                        <div className="absolute top-3 left-3 z-10 w-full h-full">
-                            <HealthBar>{state.monsterHealth}</HealthBar>
-                        </div>
-                        <div className="absolute bg-violet-700  bottom-0 whitespace-nowrap text-center left-0 right-0 z-10 w-full h-8 font-bold">
-                            {state.monster?.name}
-                        </div>
-                        {state.monster?.image && (
-                            <Image
-                                src={state.monster.image.fileUrl}
-                                fill
-                                alt="current boss"
-                            />
-                        )}
-                    </div>
-                </div>
-                {/* Image, question  */}
-                <div className="flex flex-col gap-4 w-full">
-                    <div className="w-full h-4/6">
-                        {state.question && state.question.image && state.isImageShowing && (
-                            <div className="relative w-full bg-transparent h-full -xl overflow-hidden aspect-video">
+                    {state.monster && (
+                        <div className="relative h-1/2 w-full -lg overflow-hidden">
+                            <div className="absolute top-3 left-3 z-10 w-full h-full">
+                                <HealthBar>{state.monsterHealth}</HealthBar>
+                            </div>
+                            <div className="absolute bg-violet-700  bottom-0 whitespace-nowrap text-center left-0 right-0 z-10 w-full h-8 font-bold">
+                                {state.monster?.name}
+                            </div>
+                            {state.monster?.image && (
                                 <Image
-                                    className="object-fill"
-                                    src={state.question.image?.fileUrl}
+                                    src={state.monster.image.fileUrl}
                                     fill
-                                    alt="question-image"
+                                    alt="current boss"
                                 />
-                            </div>
-                        )}
-                    </div>
-                    <div className="flex flex-col gap-2 text-xl w-full h-2/6 bg-yellow-300 p-4">
-                        {/* Question text */}
-                        <div className="">{state.question?.question}</div>
-                        {/* Question additions */}
-                        {state.question?.type === 'multiple' && (
-                            <div className="flex gap-4 items-center justify-around ">
-                                {state.question.answers.map((answer, index) => (
-                                    <p key={answer + index}>{answer}</p>
-                                ))}
-                            </div>
-                        )}
-                        {state.question?.type === 'mapper' && (
-                            <div className="flex gap-4 items-center justify-around ">
-                                <div>
-                                    {state.question.letters.map((answer, index) => (
-                                        <p key={answer + index}>{answer}</p>
-                                    ))}
-                                </div>
-                                <div>
-                                    {state.question.numbers.map((answer, index) => (
-                                        <p key={answer + index}>{answer}</p>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
+                            )}
+                        </div>
+                    )}
                 </div>
+            </div>
+            <div className="flex flex-col gap-4 px-6 py-6 w-full">
+                {state.question && (
+                    <>
+                        <div className="w-full h-4/6">
+                            {state.question && state.question.image && state.isImageShowing && (
+                                <div className="relative w-full bg-transparent h-full -xl overflow-hidden aspect-video">
+                                    <Image
+                                        className="object-fill"
+                                        src={state.question.image?.fileUrl}
+                                        fill
+                                        alt="question-image"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex flex-col gap-2 text-black text-xl w-full h-2/6 bg-yellow-300 p-4">
+                            {/* Question text */}
+                            <div className="">{state.question?.question}</div>
+                            {/* Question additions */}
+                            {state.question?.type === 'multiple' && (
+                                <div className="flex gap-4 items-center justify-around ">
+                                    {state.question.answers.map((answer, index) => (
+                                        <p key={answer + index}>{answer}</p>
+                                    ))}
+                                </div>
+                            )}
+                            {state.question?.type === 'mapper' && (
+                                <div className="flex gap-4 items-center justify-around ">
+                                    <div>
+                                        {state.question.letters.map((answer, index) => (
+                                            <p key={answer + index}>{answer}</p>
+                                        ))}
+                                    </div>
+                                    <div>
+                                        {state.question.numbers.map((answer, index) => (
+                                            <p key={answer + index}>{answer}</p>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </>
+                )}
             </div>
             <div className="flex flex-col w-2/12 h-screen border-l border-y border-gray-500 bg-gradient-to-b from-gray-900 to-gray-950 -l-lg p-4 gap-4">
                 {state.isDungeon && state.game?.dungeons && (
