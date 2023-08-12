@@ -95,6 +95,12 @@ export const Questions = () => {
         console.log('There is not enough information about a current monster');
     }
 
+    if (!context?.state.monster) {
+        console.log('There is no monster yet');
+
+        return null;
+    }
+
     return (
         <div className="flex flex-col w-full items-center justify-center gap-4">
             {questions.isLoading && <QuestionsSkeleton />}
