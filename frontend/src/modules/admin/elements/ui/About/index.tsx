@@ -38,7 +38,7 @@ export const MonsterInfo = () => {
                 <p>Количество вопросов: {monster.questions?.length}</p>
                 <p>Босс: {monster === context.state.dungeon?.boss ? 'Да' : 'Нет'}</p>
             </div>
-            <MonsterUpdate key={monster.id} />
+            <MonsterUpdate key={monster.id + monster?.name!} />
         </div>
     );
 };
