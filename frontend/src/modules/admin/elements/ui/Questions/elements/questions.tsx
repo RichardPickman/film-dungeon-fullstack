@@ -17,6 +17,7 @@ import {
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { Media } from './Media';
 
 export const QuestionsSkeleton = () => {
     return (
@@ -77,66 +78,13 @@ export const QuestionsAccordion = ({ questions, onDelete }: Props) => {
                         <AccordionContent>
                             {type === 'single' && (
                                 <div className="flex flex-col w-full items-center justify-center gap-4">
-                                    {question.image?.type === 'image' && (
-                                        <div className="relative aspect-video h-64">
-                                            <Image
-                                                className="w-full h-full object-cover"
-                                                src={question.image.fileUrl}
-                                                alt="Картинка вопроса"
-                                                fill
-                                            />
-                                        </div>
-                                    )}
-                                    {question.image?.type === 'video' && (
-                                        <div className="w-fit h-64">
-                                            <video
-                                                controls
-                                                className="w-fit h-full"
-                                                src={question.image.fileUrl}
-                                            />
-                                        </div>
-                                    )}
-                                    {question.image?.type === 'sound' && (
-                                        <div className="w-fit h-12">
-                                            <audio
-                                                controls
-                                                className="w-fit h-full"
-                                                src={question.image.fileUrl}
-                                            />
-                                        </div>
-                                    )}
+                                    {question.image && <Media image={question.image} />}
                                     <p className="h-1/3">{question.question}</p>
                                 </div>
                             )}
                             {type === 'multiple' && (
                                 <div className="flex flex-col w-full items-center gap-4">
-                                    {question.image?.type === 'image' && (
-                                        <div className="relative aspect-video h-64">
-                                            <Image
-                                                className="w-full h-full object-cover"
-                                                src={question.image.fileUrl}
-                                                alt="Картинка вопроса"
-                                                fill
-                                            />
-                                        </div>
-                                    )}
-                                    {question.image?.type === 'video' && (
-                                        <div className="w-full h-64">
-                                            <video
-                                                className="w-full h-full"
-                                                src={question.image.fileUrl}
-                                            />
-                                        </div>
-                                    )}
-                                    {question.image?.type === 'sound' && (
-                                        <div className="w-full h-12">
-                                            <audio
-                                                controls
-                                                className="w-full h-full"
-                                                src={question.image.fileUrl}
-                                            />
-                                        </div>
-                                    )}
+                                    {question.image && <Media image={question.image} />}
                                     <div className="flex flex-col gap-2 items-center">
                                         {question.answers.map((item, index) => (
                                             <p key={item + index}>{item}</p>
@@ -146,33 +94,7 @@ export const QuestionsAccordion = ({ questions, onDelete }: Props) => {
                             )}
                             {type === 'mapper' && (
                                 <div className="flex flex-col w-full items-center gap-4">
-                                    {question.image?.type === 'image' && (
-                                        <div className="relative aspect-video h-64">
-                                            <Image
-                                                className="w-full h-full object-cover"
-                                                src={question.image.fileUrl}
-                                                alt="Картинка вопроса"
-                                                fill
-                                            />
-                                        </div>
-                                    )}
-                                    {question.image?.type === 'video' && (
-                                        <div className="w-full h-64">
-                                            <video
-                                                className="w-full h-full"
-                                                src={question.image.fileUrl}
-                                            />
-                                        </div>
-                                    )}
-                                    {question.image?.type === 'sound' && (
-                                        <div className="w-full h-12">
-                                            <audio
-                                                controls
-                                                className="w-full h-full"
-                                                src={question.image.fileUrl}
-                                            />
-                                        </div>
-                                    )}
+                                    {question.image && <Media image={question.image} />}
                                     <div className="grid grid-cols-2 w-full">
                                         <div className="flex flex-col gap-2 items-center">
                                             {question.letters.map((item, index) => (
