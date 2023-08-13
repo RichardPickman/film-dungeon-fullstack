@@ -1,4 +1,5 @@
 type ImageInfo = {
+    type?: 'image' | 'video' | 'sound';
     fileUrl: string;
     fileKey: string;
 };

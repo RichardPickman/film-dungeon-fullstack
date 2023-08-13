@@ -76,27 +76,64 @@ export const QuestionsAccordion = ({ questions, onDelete }: Props) => {
                         <AccordionTrigger>{question.question}</AccordionTrigger>
                         <AccordionContent>
                             {type === 'single' && (
-                                <div className="flex flex-col items-center gap-4">
-                                    {question.image && (
-                                        <div className="relative w-64 h-64 ">
+                                <div className="flex flex-col w-full items-center justify-center gap-4">
+                                    {question.image?.type === 'image' && (
+                                        <div className="relative aspect-video h-64">
                                             <Image
+                                                className="w-full h-full object-cover"
                                                 src={question.image.fileUrl}
                                                 alt="Картинка вопроса"
                                                 fill
                                             />
                                         </div>
                                     )}
-                                    <p>{question.question}</p>
+                                    {question.image?.type === 'video' && (
+                                        <div className="w-fit h-64">
+                                            <video
+                                                controls
+                                                className="w-fit h-full"
+                                                src={question.image.fileUrl}
+                                            />
+                                        </div>
+                                    )}
+                                    {question.image?.type === 'sound' && (
+                                        <div className="w-fit h-12">
+                                            <audio
+                                                controls
+                                                className="w-fit h-full"
+                                                src={question.image.fileUrl}
+                                            />
+                                        </div>
+                                    )}
+                                    <p className="h-1/3">{question.question}</p>
                                 </div>
                             )}
                             {type === 'multiple' && (
-                                <div className="flex flex-col items-center gap-4">
-                                    {question.image && (
-                                        <div className="relative w-64 h-64 ">
+                                <div className="flex flex-col w-full items-center gap-4">
+                                    {question.image?.type === 'image' && (
+                                        <div className="relative aspect-video h-64">
                                             <Image
+                                                className="w-full h-full object-cover"
                                                 src={question.image.fileUrl}
                                                 alt="Картинка вопроса"
                                                 fill
+                                            />
+                                        </div>
+                                    )}
+                                    {question.image?.type === 'video' && (
+                                        <div className="w-full h-64">
+                                            <video
+                                                className="w-full h-full"
+                                                src={question.image.fileUrl}
+                                            />
+                                        </div>
+                                    )}
+                                    {question.image?.type === 'sound' && (
+                                        <div className="w-full h-12">
+                                            <audio
+                                                controls
+                                                className="w-full h-full"
+                                                src={question.image.fileUrl}
                                             />
                                         </div>
                                     )}
@@ -108,13 +145,31 @@ export const QuestionsAccordion = ({ questions, onDelete }: Props) => {
                                 </div>
                             )}
                             {type === 'mapper' && (
-                                <div className="flex flex-col items-center gap-4">
-                                    {question.image && (
-                                        <div className="relative w-64 h-64 ">
+                                <div className="flex flex-col w-full items-center gap-4">
+                                    {question.image?.type === 'image' && (
+                                        <div className="relative aspect-video h-64">
                                             <Image
+                                                className="w-full h-full object-cover"
                                                 src={question.image.fileUrl}
                                                 alt="Картинка вопроса"
                                                 fill
+                                            />
+                                        </div>
+                                    )}
+                                    {question.image?.type === 'video' && (
+                                        <div className="w-full h-64">
+                                            <video
+                                                className="w-full h-full"
+                                                src={question.image.fileUrl}
+                                            />
+                                        </div>
+                                    )}
+                                    {question.image?.type === 'sound' && (
+                                        <div className="w-full h-12">
+                                            <audio
+                                                controls
+                                                className="w-full h-full"
+                                                src={question.image.fileUrl}
                                             />
                                         </div>
                                     )}

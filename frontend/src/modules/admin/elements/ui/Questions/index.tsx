@@ -157,6 +157,7 @@ export const Questions = () => {
                         </Select>
                         {context?.state.monster?.id && type && (
                             <Foundation
+                                key={context?.state.monster?.id + context?.state.dungeon?.id!}
                                 monsterId={context?.state.monster?.id}
                                 type={type}
                                 onSave={data => save.mutate(data)}
