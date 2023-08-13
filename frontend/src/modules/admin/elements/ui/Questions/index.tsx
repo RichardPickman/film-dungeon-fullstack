@@ -27,7 +27,7 @@ export const Questions = () => {
     const context = useContext(CreatorContext);
     const boss = context?.state.dungeon?.boss;
     const monster = context?.state.monster;
-    const isBoss = boss?.id === monster?.id;
+    const isBoss = boss?.id === monster?.id && boss?.name === monster?.name;
     const questions = useQuery({
         queryKey: ['questions'],
         queryFn: () => {
@@ -38,6 +38,8 @@ export const Questions = () => {
             return null;
         },
     });
+
+    console.log(isBoss, monster);
 
     const [type, setType] = useState<'single' | 'multiple' | 'mapper'>('single');
 

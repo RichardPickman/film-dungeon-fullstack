@@ -41,7 +41,7 @@ export const Dungeons = () => {
     return (
         <div className="flex flex-col gap-2 w-full h-full items-center">
             <div className="flex items-center justify-center w-full p-2 border-b">Подземелья</div>
-            <div className="flex flex-col w-full h-full overflow-auto items-center">
+            <div className="flex flex-col w-full h-full gap-2 overflow-auto items-center justify-center">
                 {dungeons.map(dungeon => (
                     <Card
                         key={dungeon.id + dungeon.name}
@@ -77,7 +77,7 @@ export const Monsters = () => {
     return (
         <div className="flex flex-col gap-2 w-full h-full items-center justify-between">
             <div className="flex items-center justify-center w-full p-2 border-b">Монстры</div>
-            <div className="flex flex-col w-full h-full overflow-auto gap-2 items-center">
+            <div className="flex flex-col w-full h-full overflow-auto gap-2 items-center justify-center">
                 {monsters.map(monster => (
                     <Card
                         key={monster.id + monster.name}

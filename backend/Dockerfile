@@ -1,4 +1,4 @@
-FROM node:18-alpine AS development
+FROM node:18-alpine AS watcher
 WORKDIR /app
 
 ARG SERVER_PORT
@@ -17,8 +17,13 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 ARG SERVER_PORT
-ENV PORT $SERVER_PORT
+ARG DATABASE_URL
+
+ENV SERVER_PORT $SERVER_PORT
+ENV DATABASE_URL $DATABASE_URL
 
 COPY . .
 
-CMD ["npm", "run", "deploy"]
+RUN npm run build
+
+CMD ["npm", "run", "start"]

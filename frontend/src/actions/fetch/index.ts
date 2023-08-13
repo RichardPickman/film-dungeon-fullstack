@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 const json = (data: unknown) => JSON.stringify(data);
 

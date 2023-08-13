@@ -5,6 +5,7 @@ import { RootState } from '@/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { SingleQuestion } from './Questions/SingleQuestion';
 import { setState, toggleImage } from '@/store/reducers/creator';
+import { Questions } from '@/components/Questions';
 
 export const Question = () => {
     const state = useSelector((state: RootState) => state.session);
@@ -42,24 +43,11 @@ export const Question = () => {
 
     return (
         <div className="flex flex-col gap-4 w-full h-full p-2 justify-between">
-            {question.type === 'single' && (
-                <SingleQuestion
-                    question={question}
-                    isImage={state.isImageShowing}
-                />
-            )}
-            {question.type === 'multiple' && (
-                <SingleQuestion
-                    question={question}
-                    isImage={state.isImageShowing}
-                />
-            )}
-            {question.type === 'mapper' && (
-                <SingleQuestion
-                    question={question}
-                    isImage={state.isImageShowing}
-                />
-            )}
+            <Questions
+                question={state.question}
+                monster={state.monster}
+                isImageShowing={state.isImageShowing}
+            />
             <div className="flex gap-2 justify-around">
                 <Button
                     onClick={onPrev}

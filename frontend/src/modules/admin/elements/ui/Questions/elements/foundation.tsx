@@ -86,8 +86,8 @@ export const Foundation = ({ onSave, type, monsterId }: Props) => {
                         onSave({
                             type,
                             question,
-                            bossId: monsterId || null,
-                            monsterId: monsterId || null,
+                            bossId: null,
+                            monsterId: null,
                             image,
                         })
                     }
@@ -101,8 +101,8 @@ export const Foundation = ({ onSave, type, monsterId }: Props) => {
                             ...data,
                             type,
                             question,
-                            bossId: monsterId || null,
-                            monsterId: monsterId || null,
+                            bossId: null,
+                            monsterId: null,
                             image,
                         })
                     }
@@ -116,8 +116,8 @@ export const Foundation = ({ onSave, type, monsterId }: Props) => {
                             ...data,
                             type,
                             question,
-                            bossId: monsterId || null,
-                            monsterId: monsterId || null,
+                            bossId: null,
+                            monsterId: null,
                             image,
                         })
                     }

@@ -14,6 +14,7 @@ export const getAll = async (req: Request, res: Response, next: NextFunction) =>
 
         res.json(result);
     } catch (e) {
+        console.log(e)
         next();
     }
 };

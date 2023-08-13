@@ -5,7 +5,7 @@ services:
         container_name: backend
         build:
             context: ./backend/
-            target: development
+            target: builder
             args:
                 - SERVER_PORT=${SERVER_PORT}
                 - DATABASE_URL=${DATABASE_URL}
@@ -21,7 +21,7 @@ services:
         container_name: frontend
         build:
             context: ./frontend/
-            target: watcher
+            target: builder
             args:
                 - API_URL=${API_URL}
                 - UPLOADTHING_SECRET=${UPLOADTHING_SECRET}

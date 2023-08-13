@@ -1,13 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import { Heart } from 'lucide-react';
 import { io } from 'socket.io-client';
 import { useParams } from 'next/navigation';
 import { useState, useLayoutEffect, useEffect } from 'react';
 
 import { Card } from '@/components/Card';
 import { HealthBar } from '@/modules/host/elements/ui/HealthBar';
+import { Questions } from '@/components/Questions';
 
 const socket = io('http://localhost:5005');
 
@@ -27,7 +27,7 @@ const Page = () => {
 
     return (
         <div className="flex w-screen h-screen bg-green-700">
-            <div className="flex w-3/12 mx-3 my-6 gap-6">
+            <div className="flex w-3/12 pl-6 pt-12 pb-6 gap-6">
                 {/* HP Bar, Current BOSS */}
                 <div className="flex flex-col w-full justify-between">
                     <div className="flex items-center justify-start">
@@ -52,57 +52,19 @@ const Page = () => {
                     )}
                 </div>
             </div>
-            <div className="flex flex-col gap-4 px-6 py-6 w-full">
+            <div className="flex flex-col gap-4 px-6 pt-12 pb-6 w-full">
                 {state.question && (
-                    <>
-                        <div className="w-full h-4/6">
-                            {state.question && state.question.image && state.isImageShowing && (
-                                <div className="relative w-full bg-transparent h-full -xl overflow-hidden aspect-video">
-                                    <Image
-                                        className="object-fill"
-                                        src={state.question.image?.fileUrl}
-                                        fill
-                                        alt="question-image"
-                                    />
-                                </div>
-                            )}
-                        </div>
-                        <div className="flex flex-col gap-2 text-black text-xl w-full h-2/6 bg-yellow-300 p-4">
-                            {/* Question text */}
-                            <div className="">{state.question?.question}</div>
-                            {/* Question additions */}
-                            {state.question?.type === 'multiple' && (
-                                <div className="flex gap-4 items-center justify-around ">
-                                    {state.question.answers.map((answer, index) => (
-                                        <p key={answer + index}>{answer}</p>
-                                    ))}
-                                </div>
-                            )}
-                            {state.question?.type === 'mapper' && (
-                                <div className="flex gap-4 items-center justify-around ">
-                                    <div>
-                                        {state.question.letters.map((answer, index) => (
-                                            <p key={answer + index}>{answer}</p>
-                                        ))}
-                                    </div>
-                                    <div>
-                                        {state.question.numbers.map((answer, index) => (
-                                            <p key={answer + index}>{answer}</p>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </>
+                    <Questions
+                        question={state.question}
+                        monster={state.monster}
+                        isImageShowing={state.isImageShowing}
+                    />
                 )}
             </div>
-            <div className="flex flex-col w-2/12 h-screen border-l border-y border-gray-500 bg-gradient-to-b from-gray-900 to-gray-950 -l-lg p-4 gap-4">
+            <div className="flex flex-col w-2/12 h-screen border-l border-y border-gray-500 bg-gradient-to-b from-gray-900 to-gray-950 p-2 gap-4">
                 {state.isDungeon && state.game?.dungeons && (
-                    <div className="flex flex-col gap-2 w-full h-full items-center">
-                        <div className="flex items-center justify-center w-full p-2 border-b">
-                            Подземелья
-                        </div>
-                        <div className="flex flex-col w-full h-full overflow-auto items-center">
+                    <div className="flex flex-col w-full h-full items-center">
+                        <div className="flex flex-col w-full h-full gap-2 overflow-auto items-center justify-center">
                             {state.game?.dungeons.map(dungeon => (
                                 <Card
                                     key={dungeon.id + dungeon.name}
@@ -116,7 +78,7 @@ const Page = () => {
                 )}
                 {(state.isMonster || state.isQuestion) && (
                     <div className="flex flex-col gap-2 w-full h-full items-center justify-between">
-                        <div className="flex flex-col w-full h-full overflow-auto gap-2 items-center">
+                        <div className="flex flex-col w-full h-full overflow-auto gap-2 items-center justify-center">
                             {state.dungeon?.monsters.map(monster => (
                                 <Card
                                     key={monster.id + monster.name}

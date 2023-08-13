@@ -10,7 +10,7 @@ interface Props {
 
 export const Card = ({ image, onClick }: Props) => (
     <div
-        className="relative sm:w-10/12 md:w-8/12 lg:w-6/12 aspect-square cursor-pointer overflow-hidden border"
+        className="relative w-12/12 md:w-10/12 lg:w-8/12 aspect-square cursor-pointer overflow-hidden border"
         onClick={onClick}
     >
         {!image && (

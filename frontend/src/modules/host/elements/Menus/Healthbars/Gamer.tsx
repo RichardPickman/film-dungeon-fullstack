@@ -16,7 +16,7 @@ export const CurrentPlayerHealth = () => {
         <div className="flex flex-col w-full gap-4 items-center justify-between py-6">
             <div className="flex items-center gap-2 w-full justify-between">
                 <Label>Здоровье игроков:</Label>
-                <HealthBar>{state.gameHealth}</HealthBar>
+                <HealthBar>{hp}</HealthBar>
             </div>
             <div className="flex items-center gap-2 w-full justify-center">
                 <Button onClick={() => onClick(hp - 5)}>-5</Button>
