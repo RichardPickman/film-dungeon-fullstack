@@ -14,14 +14,14 @@ import { db } from './db';
 import { session } from './db/schemas/session';
 import { eq } from 'drizzle-orm';
 
-const { PORT } = configs;
+const { PORT, FRONTEND_ADDRESS } = configs;
 const app = express();
 const httpServer = createServer(app);
 
 app.use(bodyParser.json());
 app.use(
     cors({
-        origin: 'http://localhost:3000',
+        origin: FRONTEND_ADDRESS!,
     })
 );
 // app.use(appLogger);
@@ -32,7 +32,7 @@ httpServer.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 const io = new Server(5005, {
     cors: {
-        origin: 'http://localhost:3000',
+        origin: FRONTEND_ADDRESS!,
     },
 });
 

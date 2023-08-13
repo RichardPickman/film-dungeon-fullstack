@@ -8,12 +8,13 @@ services:
             target: builder
             args:
                 - SERVER_PORT=${SERVER_PORT}
+                - UI_URL=${UI_URL}
                 - DATABASE_URL=${DATABASE_URL}
         ports:
             - ${SERVER_PORT}:${SERVER_PORT}
             - 5005:5005
-        volumes:
-            - ./backend:/app
+        # volumes:
+        #     - ./backend:/app
         networks:
             - shop
 
@@ -24,12 +25,13 @@ services:
             target: builder
             args:
                 - API_URL=${API_URL}
+                - SOCKET_ADDRESS=${SOCKET_ADDRESS}
                 - UPLOADTHING_SECRET=${UPLOADTHING_SECRET}
                 - UPLOADTHING_APP_ID=${UPLOADTHING_APP_ID}
         ports:
             - ${FRONT_PORT}:${FRONT_PORT}
-        volumes:
-            - ./frontend:/app
+        # volumes:
+        #     - ./frontend:/app
         depends_on:
             - backend
         networks:

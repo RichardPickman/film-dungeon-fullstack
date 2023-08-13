@@ -7,4 +7,5 @@ export const configs = {
     PORT: process.env.SERVER_PORT,
     POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
     POSTGRES_USER: process.env.POSTGRES_USER,
-}
+    FRONTEND_ADDRESS: process.env.FRONTEND_ADDRESS,
+};

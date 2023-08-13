@@ -9,7 +9,7 @@ import { Card } from '@/components/Card';
 import { HealthBar } from '@/modules/host/elements/ui/HealthBar';
 import { Questions } from '@/components/Questions';
 
-const socket = io('http://localhost:5005');
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_ADDRESS!);
 
 const Page = () => {
     const { id } = useParams();
