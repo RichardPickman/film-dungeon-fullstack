@@ -146,21 +146,7 @@ export const Foundation = ({ onSave, type, monsterId }: Props) => {
                     </audio>
                 </div>
             )}
-            {!image && (fileType === 'image' || fileType === 'video') && (
-                <div className="p-4">
-                    <UploadButton
-                        endpoint="imageUploader"
-                        onClientUploadComplete={res => res && setImage({ ...res[0] })}
-                        onUploadError={() =>
-                            toast({
-                                title: 'Ошибка!',
-                                description: 'Ошибка при сохранении картинки в базу данных!',
-                            })
-                        }
-                    />
-                </div>
-            )}
-            {!image && fileType === 'sound' && (
+            {!image && (
                 <div className="p-4">
                     <UploadButton
                         endpoint="imageUploader"
@@ -197,7 +183,7 @@ export const Foundation = ({ onSave, type, monsterId }: Props) => {
                             image: image ? { ...image, type: fileType } : null,
                         })
                     }
-                    onRemove={() => removeImage()}
+                    onRemove={removeImage}
                 />
             )}
             {type === 'multiple' && (
@@ -212,7 +198,7 @@ export const Foundation = ({ onSave, type, monsterId }: Props) => {
                             image: image ? { ...image, type: fileType } : null,
                         })
                     }
-                    onRemove={() => removeImage()}
+                    onRemove={removeImage}
                 />
             )}
             {type === 'mapper' && (
@@ -227,7 +213,7 @@ export const Foundation = ({ onSave, type, monsterId }: Props) => {
                             image: image ? { ...image, type: fileType } : null,
                         })
                     }
-                    onRemove={() => removeImage()}
+                    onRemove={removeImage}
                 />
             )}
         </div>
