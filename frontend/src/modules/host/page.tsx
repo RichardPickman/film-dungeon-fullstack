@@ -11,7 +11,7 @@ import { RoomId } from './elements/RoomId';
 import { LeftMenu } from './elements/Menus/Left';
 import { RootState } from '@/store';
 
-const socket = io('http://localhost:5005');
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_ADDRESS!);
 
 const Page = () => {
     const { id: gameId } = useParams();
