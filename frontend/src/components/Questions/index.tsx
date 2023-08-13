@@ -48,14 +48,32 @@ export const Questions = ({ monster, question, isImageShowing }: Props) => {
 
     return (
         <div className="flex flex-col h-full gap-4 w-full">
-            <div className="w-full h-4/6">
-                {question && question.image && isImageShowing && (
-                    <div className="relative h-full bg-transparent overflow-hidden">
+            <div className="flex w-full h-4/6 items-center justify-center">
+                {isImageShowing && question && question.image?.type === 'image' && (
+                    <div className="relative aspect-video h-full bg-transparent overflow-hidden">
                         <Image
                             className="object-contain"
                             src={question.image?.fileUrl}
                             fill
                             alt="question-image"
+                        />
+                    </div>
+                )}
+                {isImageShowing && question && question.image?.type === 'video' && (
+                    <div className="w-fit h-full bg-transparent overflow-hidden">
+                        <video
+                            controls
+                            src={question.image?.fileUrl}
+                            className="h-full w-full"
+                        />
+                    </div>
+                )}
+                {isImageShowing && question && question.image?.type === 'sound' && (
+                    <div className="h-fit bg-transparent overflow-hidden">
+                        <audio
+                            controls
+                            src={question.image?.fileUrl}
+                            className="h-full w-full"
                         />
                     </div>
                 )}
