@@ -5,7 +5,7 @@ services:
         container_name: backend
         build:
             context: ./backend/
-            target: builder
+            target: watcher
             args:
                 - SERVER_PORT=${SERVER_PORT}
                 - UI_URL=${UI_URL}
@@ -13,8 +13,8 @@ services:
         ports:
             - ${SERVER_PORT}:${SERVER_PORT}
             - 5005:5005
-        # volumes:
-        #     - ./backend:/app
+        volumes:
+            - ./backend:/app
         networks:
             - shop
 
@@ -22,7 +22,7 @@ services:
         container_name: frontend
         build:
             context: ./frontend/
-            target: builder
+            target: watcher
             args:
                 - UI_URL=${UI_URL}
                 - API_URL=${API_URL}
@@ -31,8 +31,8 @@ services:
                 - UPLOADTHING_APP_ID=${UPLOADTHING_APP_ID}
         ports:
             - ${FRONT_PORT}:${FRONT_PORT}
-        # volumes:
-        #     - ./frontend:/app
+        volumes:
+            - ./frontend:/app
         depends_on:
             - backend
         networks:
