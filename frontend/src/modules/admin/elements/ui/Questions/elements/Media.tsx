@@ -7,7 +7,7 @@ interface Props {
 export const Media = ({ image }: Props) => {
     if (image.type === 'image') {
         return (
-            <div className="relative w-64 h-64">
+            <div className="relative aspect-video h-64">
                 <Image
                     className="w-full h-full object-cover"
                     src={image.fileUrl}
@@ -19,8 +19,9 @@ export const Media = ({ image }: Props) => {
     }
     if (image.type === 'video') {
         return (
-            <div className="w-full h-64">
+            <div className="w-fit h-64">
                 <video
+                    controls
                     className="w-full h-full"
                     src={image.fileUrl}
                 />
