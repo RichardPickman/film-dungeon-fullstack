@@ -18,9 +18,9 @@ import {
     DialogTrigger,
 } from '../../../../../components/ui/dialog';
 import { Button } from '../../../../../components/ui/button';
-import { Foundation } from './elements/foundation';
+import { Foundation } from './elements/Foundation';
 import { toast } from '../../../../../components/ui/use-toast';
-import { QuestionsAccordion, QuestionsSkeleton } from './elements/questions';
+import { QuestionsAccordion, QuestionsSkeleton } from './elements/Questions';
 import { CreatorContext } from '@/modules/admin/context';
 
 export const Questions = () => {
