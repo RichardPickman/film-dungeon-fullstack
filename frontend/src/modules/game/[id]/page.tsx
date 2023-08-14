@@ -1,25 +1,32 @@
 'use client';
 
 import Image from 'next/image';
-import { io } from 'socket.io-client';
+import { Socket, io } from 'socket.io-client';
 import { useParams } from 'next/navigation';
 import { useState, useLayoutEffect } from 'react';
 
 import { HealthBar } from '@/modules/host/elements/ui/HealthBar';
 import { Questions } from '@/components/Questions';
-import { CardsWithStatus } from './elements/Card';
+import { Cards } from './elements/Card';
 import { Crown } from 'lucide-react';
+import { DefaultEventsMap } from '@socket.io/component-emitter';
 
-const socket = io(process.env.NEXT_PUBLIC_SOCKET_ADDRESS!);
+let socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;
 
 const Page = () => {
     const { id } = useParams();
     const [state, setState] = useState<GameState | null>(null);
 
     useLayoutEffect(() => {
-        socket.on('connect', () => socket.emit('join_room', { sessionId: id }));
-        socket?.on('joined_room', data => setState(data));
-        socket?.on('state_change', data => setState(data));
+        const initializeSocket = () => {
+            socket = io(process.env.NEXT_PUBLIC_SOCKET_ADDRESS!);
+
+            socket.on('connect', () => socket!.emit('join_room', { sessionId: id }));
+            socket?.on('joined_room', data => setState(data));
+            socket?.on('state_change', data => setState(data));
+        };
+
+        initializeSocket();
     }, [id]);
 
     if (state === null) {
@@ -69,16 +76,16 @@ const Page = () => {
                     />
                 )}
             </div>
-            <div className="flex flex-col w-2/12 h-screen border-l border-y border-gray-500 bg-gradient-to-b from-gray-900 to-gray-950 p-2 gap-4">
+            <div className="flex flex-col w-2/12 h-screen border-l items-center border-y border-gray-500 bg-gradient-to-b from-gray-900 to-gray-950 p-2 gap-4">
                 {state.isDungeon && state.game?.dungeons && (
-                    <CardsWithStatus
-                        arr={state.game?.dungeons || []}
+                    <Cards
+                        items={state.game?.dungeons}
                         currentItem={state.dungeon}
                     />
                 )}
                 {(state.isMonster || state.isQuestion) && state.dungeon?.monsters && (
-                    <CardsWithStatus
-                        arr={[...state.dungeon?.monsters, state.dungeon?.boss]}
+                    <Cards
+                        items={[...state.dungeon.monsters, state.dungeon.boss]}
                         currentItem={state.monster}
                     />
                 )}

@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import { Socket, io } from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
 import { setGame } from '@/store/reducers/creator';
 import { Question } from './elements/Question/Question';
@@ -10,8 +10,9 @@ import { RightMenu } from './elements/Menus/Right';
 import { RoomId } from './elements/RoomId';
 import { LeftMenu } from './elements/Menus/Left';
 import { RootState } from '@/store';
+import { DefaultEventsMap } from '@socket.io/component-emitter';
 
-const socket = io(process.env.NEXT_PUBLIC_SOCKET_ADDRESS!);
+let socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;
 
 const Page = () => {
     const { id: gameId } = useParams();
@@ -20,18 +21,24 @@ const Page = () => {
     const dispatch = useDispatch();
 
     useLayoutEffect(() => {
-        if (state.sessionId) {
+        if (socket) {
             return;
         }
 
-        socket.on('connect', () => socket?.emit('create_room', { id: gameId, ...state }));
-        socket.on('create_room_error', error => console.log(error));
-        socket.on('created_room', (data: GameState) => {
-            console.log(data);
-            setRoomId(data.sessionId);
+        const initializeSocket = () => {
+            socket = io(process.env.NEXT_PUBLIC_SOCKET_ADDRESS!);
 
-            dispatch(setGame(data));
-        });
+            socket.on('connect', () => socket?.emit('create_room', { id: gameId, ...state }));
+            socket.on('create_room_error', error => console.log(error));
+            socket.on('created_room', (data: GameState) => {
+                console.log(data);
+                setRoomId(data.sessionId);
+
+                dispatch(setGame(data));
+            });
+        };
+
+        initializeSocket();
     }, [gameId, state, dispatch]);
 
     useEffect(() => {
