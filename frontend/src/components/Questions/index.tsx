@@ -44,12 +44,16 @@ const letters = [
 export const Questions = ({ monster, question, isImageShowing }: Props) => {
     const questionNumber = monster?.questions.findIndex(item => item.id === question?.id)! + 1;
 
-    console.log(monster);
+    if (!question) {
+        console.log('Question is not provided for Question component');
+
+        return null;
+    }
 
     return (
         <div className="flex flex-col h-full gap-4 w-full">
             <div className="flex w-full h-4/6 items-center justify-center">
-                {isImageShowing && question && question.image?.type === 'image' && (
+                {isImageShowing && question.image?.type === 'image' && (
                     <div className="relative aspect-video h-full bg-transparent overflow-hidden">
                         <Image
                             className="object-contain"
@@ -59,7 +63,7 @@ export const Questions = ({ monster, question, isImageShowing }: Props) => {
                         />
                     </div>
                 )}
-                {isImageShowing && question && question.image?.type === 'video' && (
+                {isImageShowing && question.image?.type === 'video' && (
                     <div className="w-fit h-full bg-transparent overflow-hidden">
                         <video
                             controls
@@ -68,7 +72,7 @@ export const Questions = ({ monster, question, isImageShowing }: Props) => {
                         />
                     </div>
                 )}
-                {isImageShowing && question && question.image?.type === 'sound' && (
+                {isImageShowing && question.image?.type === 'sound' && (
                     <div className="h-fit bg-transparent overflow-hidden">
                         <audio
                             controls
@@ -78,8 +82,8 @@ export const Questions = ({ monster, question, isImageShowing }: Props) => {
                     </div>
                 )}
             </div>
-            <div className="flex flex-col gap-1 text-black text-sm md:text-md lg:text-xl w-full h-2/6 bg-yellow-300 p-4">
-                <div className="h-4/12">Вопрос {questionNumber}</div>
+            <div className="flex flex-col gap-1 text-black text-sm md:text-md lg:text-xl w-full h-2/6 rounded bg-yellow-300 p-4">
+                <div className="h-4/12 font-bold">Вопрос {questionNumber}</div>
                 {/* Question text */}
                 <div className="h-4/12">{question?.question}</div>
                 {/* Question additions */}
@@ -93,7 +97,7 @@ export const Questions = ({ monster, question, isImageShowing }: Props) => {
                     </div>
                 )}
                 {question?.type === 'mapper' && (
-                    <div className="flex gap-4 items-center justify-around h-8/12">
+                    <div className="flex gap-4 items-center justify-around h-4/12">
                         <div>
                             {question.letters.map((answer, index) => (
                                 <p key={answer + index}>
