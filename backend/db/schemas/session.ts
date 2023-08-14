@@ -13,4 +13,5 @@ export const session = pgTable('session', {
     monsterHealth: integer('monsterHealth'),
     gameHealth: integer('gameHealth'),
     isImageShowing: boolean('isImageShowing'),
+    isPaused: boolean('isPaused'),
 });

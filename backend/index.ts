@@ -84,7 +84,9 @@ io.on('connection', socket => {
 
             console.log(`Game updated: ${sessionId} ${game}`);
 
-            socket.to(sessionId).emit('state_change', game);
+            if (!game.isPaused) {
+                socket.to(sessionId).emit('state_change', game);
+            }
         } catch (e) {
             console.log(e);
             socket.emit('create_room_error', e);
