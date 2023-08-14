@@ -24,6 +24,7 @@ interface GameState {
     monsterHealth: number;
     gameHealth: number;
     isImageShowing: boolean;
+    isPaused: boolean;
 }
 
 interface Store extends Game {
