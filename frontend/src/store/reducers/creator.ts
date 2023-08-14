@@ -45,6 +45,7 @@ const initialState: GameState = {
     monsterHealth: 0,
     gameHealth: 0,
     isImageShowing: true,
+    isPaused: false,
 };
 
 const creatorSlice = createSlice({
@@ -92,9 +93,16 @@ const creatorSlice = createSlice({
                 isImageShowing: !state.isImageShowing,
             };
         },
+        togglePause: state => {
+            return {
+                ...state,
+                isPaused: !state.isPaused,
+            };
+        },
     },
 });
 
-export const { setNumber, setGame, setState, setBoolean, toggleImage } = creatorSlice.actions;
+export const { setNumber, setGame, setState, setBoolean, toggleImage, togglePause } =
+    creatorSlice.actions;
 
 export default creatorSlice.reducer;
