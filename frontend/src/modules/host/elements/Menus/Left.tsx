@@ -1,6 +1,7 @@
 import { CurrentPlayerHealth } from './Healthbars/Gamer';
 import { CurrentMonsterHealth } from './Healthbars/Monster';
 import { Pause } from './Pause';
+import { ToggleUserInterface } from './ToggleUI';
 
 export const LeftMenu = () => {
     return (
@@ -8,6 +9,7 @@ export const LeftMenu = () => {
             <CurrentPlayerHealth />
             <CurrentMonsterHealth />
             <Pause />
+            <ToggleUserInterface />
         </div>
     );
 };

@@ -41,13 +41,13 @@ export const Dungeons = () => {
     return (
         <div className="flex flex-col gap-2 w-full h-full items-center">
             <div className="flex items-center justify-center w-full p-2 border-b">Подземелья</div>
-            <div className="flex flex-col w-full h-full gap-2 overflow-auto items-center justify-center">
+            <div className="flex flex-col w-1/2 md:w-8/12 lg:10/12 h-full gap-2 overflow-auto items-center justify-center">
                 {dungeons.map(dungeon => (
                     <Card
                         key={dungeon.id + dungeon.name}
                         onClick={() => onClick(dungeon)}
                         image={dungeon.image}
-                        isActive={false}
+                        isActive={state.dungeon?.id === dungeon.id}
                     />
                 ))}
             </div>
@@ -77,13 +77,15 @@ export const Monsters = () => {
     return (
         <div className="flex flex-col gap-2 w-full h-full items-center justify-between">
             <div className="flex items-center justify-center w-full p-2 border-b">Монстры</div>
-            <div className="flex flex-col w-full h-full overflow-auto gap-2 items-center justify-center">
+            <div className="flex flex-col w-1/2 md:w-8/12 lg:10/12 h-full overflow-auto gap-2 items-center justify-center">
                 {monsters.map(monster => (
                     <Card
                         key={monster.id + monster.name}
                         onClick={() => onClick(monster)}
                         image={monster.image}
-                        isActive={false}
+                        isActive={
+                            state.monster?.id === monster.id && state.monster?.name === monster.name
+                        }
                     />
                 ))}
                 {boss && (
@@ -91,7 +93,9 @@ export const Monsters = () => {
                         key={boss.id + boss.name}
                         onClick={() => onClick(boss)}
                         image={boss.image}
-                        isActive={false}
+                        isActive={
+                            state.monster?.id === boss.id && state.monster?.name === boss.name
+                        }
                     />
                 )}
             </div>
@@ -122,7 +126,6 @@ export const Questions = () => {
 
     const onLeave = () => {
         dispatch(setState({ key: 'question', value: null }));
-        dispatch(setState({ key: 'monster', value: null }));
         dispatch(setBoolean({ key: 'isMonster', value: true }));
     };
 

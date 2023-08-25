@@ -6,6 +6,8 @@ import { LeaveIcon } from '@/components/Icons/Leave';
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { CreatorContext } from '../../context';
+import { DeleteContextMenu } from './DeleteContextMenu';
+import { deleteDungeon } from '@/services/dungeon';
 
 export const Dungeons = () => {
     const context = useContext(CreatorContext);
@@ -22,19 +24,29 @@ export const Dungeons = () => {
         return null;
     }
 
+    const onDelete = async (item: Dungeon) => {
+        await deleteDungeon(item);
+        context?.refetchAll();
+    };
+
     return (
         <div className="flex flex-col h-full group relative items-center gap-4">
             <Header text="Подземелья" />
             <div className="w-full h-full flex flex-col items-center gap-4">
                 {context.state.game.dungeons.map(item => (
-                    <Card
-                        key={item.id}
-                        image={item.image}
-                        onClick={() => onDungeonChange(item)}
-                    />
+                    <DeleteContextMenu
+                        key={item.id + item.name}
+                        className="w-full flex flex-col items-center"
+                        onDelete={() => onDelete(item)}
+                    >
+                        <Card
+                            image={item.image}
+                            onClick={() => onDungeonChange(item)}
+                        />
+                    </DeleteContextMenu>
                 ))}
-                <DungeonCreate gameId={context?.state.game.id} />
             </div>
+            <DungeonCreate gameId={context?.state.game.id} />
             <div className="flex flex-col w-full p-2">
                 <Button
                     variant="default"

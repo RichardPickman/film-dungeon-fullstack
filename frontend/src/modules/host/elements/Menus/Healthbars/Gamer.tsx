@@ -18,11 +18,15 @@ export const CurrentPlayerHealth = () => {
                 <Label>Здоровье игроков:</Label>
                 <HealthBar>{hp}</HealthBar>
             </div>
-            <div className="flex items-center gap-2 w-full justify-center">
-                <Button onClick={() => onClick(hp - 5)}>-5</Button>
-                <Button onClick={() => onClick(hp - 1)}>-1</Button>
-                <Button onClick={() => onClick(hp + 1)}>+1</Button>
-                <Button onClick={() => onClick(hp + 5)}>+5</Button>
+            <div className="flex flex-col items-center gap-2 w-full justify-center">
+                <div className="flex gap-2">
+                    <Button onClick={() => onClick(hp - 1)}>-1</Button>
+                    <Button onClick={() => onClick(hp + 1)}>+1</Button>
+                </div>
+                <div className="flex gap-2">
+                    <Button onClick={() => onClick(hp - 5)}>-5</Button>
+                    <Button onClick={() => onClick(hp + 5)}>+5</Button>
+                </div>
             </div>
         </div>
     );

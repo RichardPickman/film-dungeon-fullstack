@@ -1,41 +1,39 @@
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { CreatorContext } from '@/modules/admin/context';
 import { RootState } from '@/store';
-import { setBoolean, togglePause } from '@/store/reducers/creator';
-import { useContext } from 'react';
+import { toggleUi } from '@/store/reducers/creator';
 import { useDispatch, useSelector } from 'react-redux';
 
-export const Pause = () => {
+export const ToggleUserInterface = () => {
     const state = useSelector((state: RootState) => state.session);
     const dispatch = useDispatch();
-    const isPaused = state.isPaused;
+    const isHidden = state.isUiHidden;
 
-    const toggle = () => dispatch(togglePause());
+    const toggle = () => dispatch(toggleUi());
 
-    if (isPaused) {
+    if (isHidden) {
         return (
-            <div className="flex flex-col items-center justify-center gap-4">
-                <Label id="resume">Игра на паузе</Label>
+            <div className="flex flex-col items-center justify-center gap-4 text-center">
+                <Label id="resume">Интерфейс скрыт!</Label>
                 <Button
                     id="resume"
                     onClick={toggle}
                 >
-                    Возобновить
+                    Показать интерфейс
                 </Button>
             </div>
         );
     }
 
-    if (!isPaused) {
+    if (!isHidden) {
         return (
-            <div className="flex flex-col items-center justify-center gap-4">
-                <Label id="resume">Игра идет!</Label>
+            <div className="flex flex-col items-center justify-center gap-4 text-center">
+                <Label id="resume">Интерфейс не скрыт!</Label>
                 <Button
                     id="resume"
                     onClick={toggle}
                 >
-                    Пауза
+                    Скрыть интерфейс
                 </Button>
             </div>
         );

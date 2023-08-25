@@ -25,6 +25,7 @@ interface GameState {
     gameHealth: number;
     isImageShowing: boolean;
     isPaused: boolean;
+    isUiHidden: boolean;
 }
 
 interface Store extends Game {

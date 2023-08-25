@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Skeleton } from '../ui/skeleton';
 import { UserIcon } from '../Icons/User';
+import { cn } from '@/lib/utils';
 
 interface Props {
     image?: ImageInfo;
@@ -8,7 +9,7 @@ interface Props {
     onClick: () => void;
 }
 
-export const Card = ({ image, onClick }: Props) => (
+export const Card = ({ image, onClick, isActive }: Props) => (
     <div
         className="relative w-12/12 md:w-10/12 lg:w-8/12 aspect-square cursor-pointer overflow-hidden border rounded"
         onClick={onClick}
@@ -20,7 +21,7 @@ export const Card = ({ image, onClick }: Props) => (
         )}
         {image && (
             <Image
-                className="object-cover"
+                className={cn('object-cover', isActive ? 'brightness-100' : 'brightness-50')}
                 src={image.fileUrl}
                 fill
                 alt="Картинка карточки"

@@ -31,7 +31,6 @@ const Page = () => {
             socket.on('connect', () => socket?.emit('create_room', { id: gameId, ...state }));
             socket.on('create_room_error', error => console.log(error));
             socket.on('created_room', (data: GameState) => {
-                console.log(data);
                 setRoomId(data.sessionId);
 
                 dispatch(setGame(data));

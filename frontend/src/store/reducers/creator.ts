@@ -11,7 +11,7 @@ interface NumberedStateMap {
 }
 
 interface BooleanStateMap {
-    key: 'isDungeon' | 'isMonster' | 'isQuestion';
+    key: 'isDungeon' | 'isMonster' | 'isQuestion' | 'isPaused' | 'isUiHidden';
     value: boolean | null;
 }
 
@@ -46,6 +46,7 @@ const initialState: GameState = {
     gameHealth: 0,
     isImageShowing: true,
     isPaused: false,
+    isUiHidden: false,
 };
 
 const creatorSlice = createSlice({
@@ -99,10 +100,16 @@ const creatorSlice = createSlice({
                 isPaused: !state.isPaused,
             };
         },
+        toggleUi: state => {
+            return {
+                ...state,
+                isUiHidden: !state.isUiHidden,
+            };
+        },
     },
 });
 
-export const { setNumber, setGame, setState, setBoolean, toggleImage, togglePause } =
+export const { setNumber, setGame, setState, setBoolean, toggleImage, togglePause, toggleUi } =
     creatorSlice.actions;
 
 export default creatorSlice.reducer;

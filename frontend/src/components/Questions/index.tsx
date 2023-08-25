@@ -73,7 +73,7 @@ export const Questions = ({ monster, question, isImageShowing }: Props) => {
                     </div>
                 )}
                 {isImageShowing && question.image?.type === 'sound' && (
-                    <div className="h-fit bg-transparent overflow-hidden">
+                    <div className="w-full h-full bg-transparent overflow-hidden">
                         <audio
                             controls
                             src={question.image?.fileUrl}

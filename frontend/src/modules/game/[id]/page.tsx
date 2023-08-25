@@ -33,9 +33,13 @@ const Page = () => {
         return <div className="flex w-screen h-screen items-center justify-center">Loading...</div>;
     }
 
+    if (state.isUiHidden) {
+        return <div className="flex w-screen h-screen bg-green-700"></div>;
+    }
+
     return (
         <div className="flex w-screen h-screen bg-green-700">
-            <div className="flex w-3/12 pl-6 pt-12 pb-6 gap-6">
+            <div className="flex w-2/12 pl-6 pt-12 pb-6 gap-6">
                 <div className="flex flex-col w-full justify-between">
                     <div className="flex items-center justify-start">
                         <HealthBar>{state.gameHealth}</HealthBar>
@@ -67,7 +71,7 @@ const Page = () => {
                     )}
                 </div>
             </div>
-            <div className="flex flex-col gap-4 px-6 pt-12 pb-6 w-full">
+            <div className="flex flex-col w-8/12 gap-2 items-center px-6 pt-12 pb-6">
                 {state.question && (
                     <Questions
                         question={state.question}

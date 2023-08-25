@@ -14,4 +14,5 @@ export const session = pgTable('session', {
     gameHealth: integer('gameHealth'),
     isImageShowing: boolean('isImageShowing'),
     isPaused: boolean('isPaused'),
+    isUiHidden: boolean('isUiHidden'),
 });
